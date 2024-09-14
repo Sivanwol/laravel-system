@@ -18,3 +18,5 @@ RUN cd /var/www/html && npm install && npm run build
 
 RUN cd /var/www/html && ls -la .
 RUN cd /var/www/html && ls -la ./storage
+
+CMD ["php-fpm"]
