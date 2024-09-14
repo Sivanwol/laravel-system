@@ -3,6 +3,10 @@ FROM serversideup/php:8.3-fpm-nginx
 ENV PHP_OPCACHE_ENABLE=1
 
 USER root
+RUN apt-get -y update \
+&& apt-get install -y libicu-dev \ ### <-- Added space here
+&& docker-php-ext-configure intl \
+&& docker-php-ext-install intl
 
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
