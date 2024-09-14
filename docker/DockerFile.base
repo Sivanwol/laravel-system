@@ -9,12 +9,6 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
-RUN mkdir -p /etc/nginx/conf.d && \
-    chown -R www-data:www-data /etc/nginx && \
-    chmod -R 755 /etc/nginx && \
-    chown -R www-data:www-data /var/cache/nginx && \
-    chown -R www-data:www-data /var/log/nginx && \
-    chown -R www-data:www-data /etc/nginx/conf.d
 COPY --chown=www-data:www-data . /var/www/html
 USER www-data
 RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
