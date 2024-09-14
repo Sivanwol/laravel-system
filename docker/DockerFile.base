@@ -33,6 +33,5 @@ RUN cd /var/www/html && ls -la .
 RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
 RUN cd /var/www/html && npm install && npm run build
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-
-# Default command
-CMD ["php-fpm"]
+RUN cd /var/www/html && ls -la .
+RUN cd /var/www/html && ls -la ./storage
