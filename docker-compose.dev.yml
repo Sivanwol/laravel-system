@@ -1,10 +1,22 @@
 services:
+    web:
+        build:
+            context: .
+            dockerfile: web.dockerfile
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - "application"
+        ports:
+            - 80:80
     application:
       build:
         context: .
         dockerfile: ./docker/DockerFile.base
+      working_dir: /var/www
       volumes:
-        - './storage:/var/www/html/storage'
+        - ./:/var/www
       environment:
         APP_NAME: 'Sabu App'
         APP_ENV: ${APP_ENV:-production}
