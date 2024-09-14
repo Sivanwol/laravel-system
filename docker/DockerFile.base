@@ -3,27 +3,29 @@ FROM serversideup/php:8.3-fpm-nginx
 ENV PHP_OPCACHE_ENABLE=1
 
 USER root
-
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     && docker-php-ext-install intl bcmath
 RUN docker-php-ext-install pdo pdo_mysql
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get install -y nodejs
+ß
+# Create entrypoint script
 RUN echo '#!/bin/sh' > /usr/local/bin/docker-entrypoint.sh && \
     echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'php artisan config:cache' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'php artisan route:cache' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'php artisan route:ca0che' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'php artisan view:cache' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'exec "$@"' >> /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-entrypoint.sh
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
 
 COPY --chown=www-data:www-data . /var/www/html
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 USER www-data
 RUN cd /var/www/html && ls -la .
 
