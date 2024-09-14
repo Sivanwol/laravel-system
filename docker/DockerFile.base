@@ -7,7 +7,7 @@ USER root
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     && docker-php-ext-install intl bcmath
-
+RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
@@ -20,3 +20,6 @@ RUN cd /var/www/html && ls -la .
 RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
 RUN cd /var/www/html && npm install
 RUN cd /var/www/html &&  npm run build
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
