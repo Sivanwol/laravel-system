@@ -1,15 +1,45 @@
 FROM serversideup/php:8.3-fpm-nginx
 
 ENV PHP_OPCACHE_ENABLE=1
-
+ENV SSL_MODE=off
+ENV NODE_VERSION=20
+ENV AUTORUN_ENABLED=true
 USER root
+
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     libicu-dev \
-    && docker-php-ext-install intl bcmath
-RUN docker-php-ext-install pdo pdo_mysql
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
+    zlib1g-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libpq-dev \
+    libfreetype6-dev \
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install intl bcmath gd pdo pdo_pgsql
+
+# Enable Redis extension (assuming it's already installed)
+RUN docker-php-ext-enable redis
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    && apt-get update && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --chown=www-data:www-data . /var/www/html
+
 USER www-data
-RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
-RUN cd /var/www/html && npm install && npm run build
+
+# Install dependencies and build
+RUN npm ci \
+    && npm run build \
+    && rm -rf /var/www/html/.npm
+
+# Install PHP dependencies
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+
+# Remove composer cache
+RUN rm -rf /var/www/html/.composer/cache
