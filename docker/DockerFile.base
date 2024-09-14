@@ -10,8 +10,8 @@ RUN apt-get install -y nodejs
 COPY --chown=www-data:www-data . /var/www/html
 
 USER www-data
-WORKDIR /var/www/html
-RUN npm install
-RUN npm run build
+RUN cd /var/www/html && ls -la .
+RUN cd /var/www/html && npm install
+RUN cd /var/www/html &&  npm run build
 
-RUN composer install --no-interaction --optimize-autoloader --no-dev
+RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
