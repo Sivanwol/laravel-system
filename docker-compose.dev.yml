@@ -1,0 +1,33 @@
+services:
+    application:
+      build:
+        context: ./docker
+        dockerfile: Dockerfile.base
+      volumes:
+        - './storage:/var/www/html/storage'
+      environment:
+        APP_NAME: 'Sabu App'
+        APP_ENV: ${APP_ENV:-production}
+        APP_DEBUG: ${APP_DEBUG:-false}
+        APP_TIMEZONE: UTC
+        APP_KEY: '${APP_KEY}'
+        DB_HOST: '${DB_HOST}'
+        DB_PORT: '${DB_PORT}'
+        DB_CONNECTION: pgsql
+        DB_DATABASE: '${DB_DATABASE}'
+        DB_USERNAME: '${DB_USERNAME}'
+        DB_PASSWORD: '${DB_PASSWORD}'
+        SESSION_DRIVER: database
+        SESSION_LIFETIME: 120
+        SESSION_ENCRYPT: false
+        SESSION_PATH: /
+        SESSION_DOMAIN: null
+        FILESYSTEM_DISK: local
+        VITE_APP_NAME: "${APP_NAME}"
+    # scheduler:
+    #   image: 'username/image:latest'
+    #   command: [ "php", "/var/www/html/artisan", "schedule:work" ]
+    #   volumes:
+    #     - './storage:/var/www/html/storage'
+    #   environment:
+    #     PHP_FPM_POOL_NAME: app_scheduler
