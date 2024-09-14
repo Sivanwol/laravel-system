@@ -2,7 +2,7 @@ services:
     application:
       build:
         context: ./docker
-        dockerfile: Dockerfile.base
+        dockerfile: DockerFile.base
       volumes:
         - './storage:/var/www/html/storage'
       environment:
