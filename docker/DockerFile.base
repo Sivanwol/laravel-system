@@ -12,9 +12,6 @@ RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
 COPY --chown=www-data:www-data . /var/www/html
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chown -R www-data:www-data /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 RUN chmod -R 775 /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 USER www-data
