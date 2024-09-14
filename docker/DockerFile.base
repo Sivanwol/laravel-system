@@ -16,7 +16,7 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 USER www-data
-
+RUN mkdir -p /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 RUN chown -R www-data:www-data /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 RUN chmod -R 775 /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
