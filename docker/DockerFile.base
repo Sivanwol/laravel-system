@@ -11,26 +11,16 @@ RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
-# Create entrypoint script
-RUN echo '#!/bin/sh' > /usr/local/bin/docker-entrypoint.sh && \
-    echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'php artisan config:cache' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'php artisan route:cache' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'php artisan view:cache' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'exec "$@"' >> /usr/local/bin/docker-entrypoint.sh &&
-
-
 COPY --chown=www-data:www-data . /var/www/html
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 USER www-data
-RUN cd /var/www/html && ls -la .
 
 RUN chown -R www-data:www-data /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 RUN chmod -R 775 /data/coolify/applications/twcssokw8c8soks4osc0o0w8/storage
 RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
 RUN cd /var/www/html && npm install && npm run build
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
 RUN cd /var/www/html && ls -la .
 RUN cd /var/www/html && ls -la ./storage
