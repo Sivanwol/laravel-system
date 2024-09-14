@@ -30,7 +30,8 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chown=www-data:www-data . /var/www/html
-
+RUN chown -R www-data:www-data /var/www/html/storage/framework
+RUN chmod -R 775 /var/www/html/storage/framework
 USER www-data
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
