@@ -11,7 +11,7 @@ COPY --chown=www-data:www-data . /var/www/html
 
 USER www-data
 RUN cd /var/www/html && ls -la .
-RUN cd /var/www/html && npm install
-RUN cd /var/www/html &&  npm run build
 
 RUN cd /var/www/html && composer install --no-interaction --optimize-autoloader --no-dev
+RUN cd /var/www/html && npm install
+RUN cd /var/www/html &&  npm run build
