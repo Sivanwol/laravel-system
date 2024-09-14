@@ -32,14 +32,13 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
 COPY --chown=www-data:www-data . /var/www/html
 
 USER www-data
-RUN npm install ziggy-js
+# Install PHP dependencies
+RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Install dependencies and build
 RUN npm install \
     && npm run build \
     && rm -rf /var/www/html/.npm
 
-# Install PHP dependencies
-RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Remove composer cache
 RUN rm -rf /var/www/html/.composer/cache
