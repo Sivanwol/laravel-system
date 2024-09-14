@@ -5,8 +5,8 @@ services:
         dockerfile: ./docker/DockerFile.base
       working_dir: /var/www/html
       ports:
-        - '${APP_PORT:-5000}:${APP_PORT:-5000}'
-        - '${VITE_PORT:-3000}:${VITE_PORT:-3000}'
+        - '${APP_PORT:-5000}:8080'
+        - '${VITE_PORT:-3000}:3000'
       volumes:
         - './storage:/var/www/html/storage'
         - ./nginx/conf.d:/etc/nginx/conf.d:rw
