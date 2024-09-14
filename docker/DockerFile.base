@@ -1,9 +1,8 @@
-FROM serversideup/php:8.3-fpm
+FROM serversideup/php:8.3-fpm-nginx
 
 ENV PHP_OPCACHE_ENABLE=1
 
 USER root
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     && docker-php-ext-install intl bcmath
