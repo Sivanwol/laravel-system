@@ -1,7 +1,7 @@
 services:
-    laravel.test:
+    application:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.3
+            context: ./docker/8.3
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -23,11 +23,11 @@ services:
             - sail
         depends_on:
             - pgsql
-            - memcached
-            - mailpit
-            - redis
-            - meilisearch
-            - minio
+            # - memcached
+            # - mailpit
+            # - redis
+            # - meilisearch
+            # - minio
     pgsql:
         image: 'postgres:15'
         ports:
