@@ -32,7 +32,7 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
 COPY --chown=www-data:www-data . /var/www/html
 
 USER www-data
-
+RUN npm install ziggy-jsz
 # Install dependencies and build
 RUN npm install \
     && npm run build \
