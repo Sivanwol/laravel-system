@@ -1,8 +1,8 @@
 services:
     application:
       build:
-        context: ./docker
-        dockerfile: DockerFile.base
+        context: .
+        dockerfile: /docker/DockerFile.base
       volumes:
         - './storage:/var/www/html/storage'
       environment:
