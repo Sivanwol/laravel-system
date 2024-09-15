@@ -3,9 +3,7 @@ FROM serversideup/php:8.3-fpm-nginx
 ENV PHP_OPCACHE_ENABLE=1
 ENV SSL_MODE=off
 ENV NODE_VERSION=20
-ENV AUTORUN_ENABLED=true
 USER root
-RUN env
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     libicu-dev \
@@ -32,7 +30,14 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
 COPY --chown=www-data:www-data . /var/www/html
 RUN chown -R www-data:www-data /var/www/html/storage/framework
 RUN chmod -R 775 /var/www/html/storage/framework
+RUN chown -R www-data:www-data /var/www/html/storage/framework/views
+RUN chmod -R 775 /var/www/html/storage/framework/views
+RUM chown -R www-data:www-data /var/www/html/storage/logs
+RUN chmod -R 775 /var/www/html/storage/logs
+
 USER www-data
+
+RUN env >> .env
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Install dependencies and build
