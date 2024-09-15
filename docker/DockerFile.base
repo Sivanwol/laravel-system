@@ -37,7 +37,6 @@ RUN chmod -R 775 /var/www/html/storage/logs
 
 USER www-data
 
-RUN env >> .env
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Install dependencies and build
