@@ -1,8 +1,11 @@
 FROM serversideup/php:8.3-fpm-nginx
+ARG DYNMIC_APP_URL
 
+ENV APP_URL=${DYNMIC_APP_URL}
 ENV PHP_OPCACHE_ENABLE=1
 ENV SSL_MODE=off
 ENV NODE_VERSION=20
+
 USER root
 # Install dependencies
 RUN apt-get update && apt-get install -y \

@@ -16,6 +16,8 @@ services:
         APP_DEBUG: ${APP_DEBUG:-false}
         APP_TIMEZONE: UTC
         APP_KEY: '${APP_KEY}'
+        DATABASE_URL: '${DATABASE_URL}'
+        DYNMIC_APP_URL: '${DYNMIC_APP_URL}'
         DB_HOST: '${DB_HOST}'
         DB_PORT: '${DB_PORT}'
         DB_CONNECTION: pgsql
@@ -29,8 +31,6 @@ services:
         SESSION_DOMAIN: null
         FILESYSTEM_DISK: local
         VITE_APP_NAME: "${APP_NAME}"
-        WWWUSER: '${WWWUSER:-33}'
-        WWWGROUP: '${WWWGROUP:-33}'
     # scheduler:
     #   image: 'username/image:latest'
     #   command: [ "php", "/var/www/html/artisan", "schedule:work" ]
