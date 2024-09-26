@@ -30,15 +30,17 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get update && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --chown=www-data:www-data . /var/www/html
-RUN chown -R www-data:www-data /var/www/html/storage/framework
+RUN groupadd --force -g 1000 sail
+RUN useradd -ms /bin/bash --no-user-group -g 1000 -u 1337 sail
+COPY --chown=sail:sail . /var/www/html
+RUN chown -R sail:sail /var/www/html/storage/framework
 RUN chmod -R 775 /var/www/html/storage/framework
-RUN chown -R www-data:www-data /var/www/html/storage/framework/views
+RUN chown -R sail:sail /var/www/html/storage/framework/views
 RUN chmod -R 775 /var/www/html/storage/framework/views
-RUN chown -R www-data:www-data /var/www/html/storage/logs
+RUN chown -R sail:sail /var/www/html/storage/logs
 RUN chmod -R 775 /var/www/html/storage/logs
-
-USER www-data
+RUN chown -R sail:sail /var/www/
+USER sail
 
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
