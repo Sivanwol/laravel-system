@@ -10,6 +10,8 @@ export default {
         './vendor/awcodes/filament-tiptap-editor/resources/**/*.blade.php',
         './vendor/awcodes/filament-table-repeater/resources/**/*.blade.php',
         './vendor/jaocero/activity-timeline/resources/views/**/*.blade.php',
+        './vendor/lara-zeus/dynamic-dashboard/resources/views/themes/**/*.blade.php',
+        './vendor/lara-zeus/dynamic-dashboard/src/Models/Columns.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.tsx',

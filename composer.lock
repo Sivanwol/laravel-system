@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22d5fdfd0398b8a0dfe04dae76ecc1bf",
+    "content-hash": "30caa48bae496396c432386fc8457381",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -149,6 +149,64 @@
                 }
             ],
             "time": "2024-03-10T23:01:24+00:00"
+        },
+        {
+            "name": "archtechx/laravel-seo",
+            "version": "v0.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/archtechx/laravel-seo.git",
+                "reference": "76d0f9efac160e499daae2d1a79e2d09ca0daaae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/archtechx/laravel-seo/zipball/76d0f9efac160e499daae2d1a79e2d09ca0daaae",
+                "reference": "76d0f9efac160e499daae2d1a79e2d09ca0daaae",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0|^11.0",
+                "illuminate/view": "^10.0|^11.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "intervention/image": "^2.7",
+                "nunomaduro/larastan": "^2.4",
+                "orchestra/testbench": "^8.0|^9.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ArchTech\\SEO\\SEOServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "ArchTech\\SEO\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Samuel Štancl",
+                    "email": "samuel@archte.ch"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/archtechx/laravel-seo/issues",
+                "source": "https://github.com/archtechx/laravel-seo/tree/v0.10.1"
+            },
+            "time": "2024-05-03T22:09:30+00:00"
         },
         {
             "name": "awcodes/filament-badgeable-column",
@@ -859,6 +917,60 @@
             "time": "2023-11-29T23:19:16+00:00"
         },
         {
+            "name": "calebporzio/sushi",
+            "version": "v2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/calebporzio/sushi.git",
+                "reference": "01dd34fe3374f5fb7ce63756c0419385e31cd532"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/01dd34fe3374f5fb7ce63756c0419385e31cd532",
+                "reference": "01dd34fe3374f5fb7ce63756c0419385e31cd532",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo_sqlite": "*",
+                "ext-sqlite3": "*",
+                "illuminate/database": "^5.8 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "illuminate/support": "^5.8 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "php": "^7.1.3|^8.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.9 || ^3.1.4",
+                "orchestra/testbench": "3.8.* || 3.9.* || ^4.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "phpunit/phpunit": "^7.5 || ^8.4 || ^9.0 || ^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sushi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio",
+                    "email": "calebporzio@gmail.com"
+                }
+            ],
+            "description": "Eloquent's missing \"array\" driver.",
+            "support": {
+                "source": "https://github.com/calebporzio/sushi/tree/v2.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/calebporzio",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-24T15:23:03+00:00"
+        },
+        {
             "name": "carbonphp/carbon-doctrine-types",
             "version": "3.2.0",
             "source": {
@@ -1103,6 +1215,77 @@
                 }
             ],
             "time": "2024-01-05T15:54:20+00:00"
+        },
+        {
+            "name": "codeat3/blade-iconpark",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-iconpark.git",
+                "reference": "8d1b1a1c832134128bb6013f92487e27cb140405"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-iconpark/zipball/8d1b1a1c832134128bb6013f92487e27cb140405",
+                "reference": "8d1b1a1c832134128bb6013f92487e27cb140405",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.8",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.5|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladeIconpark\\BladeIconparkServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladeIconpark\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of \"Icon Park Icons\" in your Laravel Blade views. ",
+            "homepage": "https://github.com/codeat3/blade-iconpark",
+            "keywords": [
+                "blade",
+                "iconpark",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-iconpark/issues",
+                "source": "https://github.com/codeat3/blade-iconpark/tree/1.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T15:08:03+00:00"
         },
         {
             "name": "danharrin/date-format-converter",
@@ -2568,6 +2751,51 @@
                 "source": "https://github.com/filamentphp/filament"
             },
             "time": "2024-07-31T11:53:24+00:00"
+        },
+        {
+            "name": "filament/spatie-laravel-translatable-plugin",
+            "version": "v3.2.115",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filamentphp/spatie-laravel-translatable-plugin.git",
+                "reference": "4e606068ebf93d6bcabb07214db13b70707113e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-translatable-plugin/zipball/4e606068ebf93d6bcabb07214db13b70707113e6",
+                "reference": "4e606068ebf93d6bcabb07214db13b70707113e6",
+                "shasum": ""
+            },
+            "require": {
+                "filament/support": "self.version",
+                "illuminate/support": "^10.45|^11.0",
+                "php": "^8.1",
+                "spatie/laravel-translatable": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Filament\\SpatieLaravelTranslatablePluginServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Filament\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Filament support for `spatie/laravel-translatable`.",
+            "homepage": "https://github.com/filamentphp/filament",
+            "support": {
+                "issues": "https://github.com/filamentphp/filament/issues",
+                "source": "https://github.com/filamentphp/filament"
+            },
+            "time": "2024-07-31T11:53:26+00:00"
         },
         {
             "name": "filament/support",
@@ -4250,6 +4478,171 @@
                 "source": "https://github.com/kirschbaum-development/eloquent-power-joins/tree/3.5.8"
             },
             "time": "2024-09-10T10:28:05+00:00"
+        },
+        {
+            "name": "lara-zeus/core",
+            "version": "v3.1.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lara-zeus/core.git",
+                "reference": "8a06819ce82e029d30e449ac4bc4c7f07dd41332"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lara-zeus/core/zipball/8a06819ce82e029d30e449ac4bc4c7f07dd41332",
+                "reference": "8a06819ce82e029d30e449ac4bc4c7f07dd41332",
+                "shasum": ""
+            },
+            "require": {
+                "archtechx/laravel-seo": "^0.10",
+                "calebporzio/sushi": "^2.4",
+                "codeat3/blade-iconpark": "^1.5",
+                "ext-json": "*",
+                "ext-pdo_sqlite": "*",
+                "ext-sqlite3": "*",
+                "filament/filament": "^3.1",
+                "filament/spatie-laravel-translatable-plugin": "^3.1",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.2",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "2.x-dev",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^10.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaraZeus\\Core\\CoreServiceProvider"
+                    ],
+                    "aliases": {
+                        "Core": "LaraZeus\\Core\\CoreFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaraZeus\\Core\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lara Zeus (Ash)",
+                    "email": "info@larazeus.com"
+                }
+            ],
+            "description": "the core for zeus packages",
+            "homepage": "https://larazeus.com",
+            "keywords": [
+                "contact",
+                "core",
+                "form",
+                "lara-zeus",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/lara-zeus/core/issues",
+                "source": "https://github.com/lara-zeus/core"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/atmonshi",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-05T18:44:33+00:00"
+        },
+        {
+            "name": "lara-zeus/dynamic-dashboard",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lara-zeus/dynamic-dashboard.git",
+                "reference": "adfb4b1cdfdaa01299631f0e569ce201a7cc545a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lara-zeus/dynamic-dashboard/zipball/adfb4b1cdfdaa01299631f0e569ce201a7cc545a",
+                "reference": "adfb4b1cdfdaa01299631f0e569ce201a7cc545a",
+                "shasum": ""
+            },
+            "require": {
+                "lara-zeus/core": "^3.1",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0",
+                "nunomaduro/phpinsights": "^2.8",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaraZeus\\DynamicDashboard\\DynamicDashboardServiceProvider"
+                    ],
+                    "aliases": {
+                        "DynamicDashboard": "LaraZeus\\DynamicDashboard\\Facades\\DynamicDashboard"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaraZeus\\DynamicDashboard\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lara Zeus (Ash)",
+                    "email": "info@larazeus.com"
+                }
+            ],
+            "description": "Zeus Dynamic Dashboard to manage widgets for filament dashboard your website landing page",
+            "homepage": "https://larazeus.com/dynamic-dashboard",
+            "keywords": [
+                "filamentphp",
+                "frontpage",
+                "landing page",
+                "lara-zeus",
+                "laravel",
+                "widgets"
+            ],
+            "support": {
+                "issues": "https://github.com/lara-zeus/dynamic-dashboard/issues",
+                "source": "https://github.com/lara-zeus/dynamic-dashboard"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/atmonshi",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-05T18:53:29+00:00"
         },
         {
             "name": "lara-zeus/inline-chart",

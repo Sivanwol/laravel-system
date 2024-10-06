@@ -74,7 +74,27 @@ class AdminPanelProvider extends PanelProvider
                     ->listLayoutButtonIcon('heroicon-o-list-bullet')
                     ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
                 DebuggerPlugin::make()
-                    ->authorize(condition: fn() => auth()->user()->can('view.debuggers')),
+                    ->authorize(condition: fn() => auth()->user()->can('view.debuggers'))
+                    ->horizonNavigation(
+                        condition: fn () => auth()->user()->can('view.horizon'),
+                        label: 'Horizon',
+                        url: url('horizon'),
+                        openInNewTab: fn () => true
+                    )
+                    ->telescopeNavigation(
+                        condition: fn()=> auth()->user()->can('view.telescope'),
+                        label: 'Telescope',
+                        icon: 'heroicon-o-sparkles',
+                        url: url('admin/hq_status'),
+                        openInNewTab: fn () => true
+                    )
+                    ->pulseNavigation(
+                        condition: fn () => auth()->user()->can('view.pulse'),
+                        label: 'Pulse',
+                        icon: 'heroicon-o-bolt',
+                        url: url('admin/hq_pulse'),
+                        openInNewTab: fn () => true
+                    ),
                 GlobalSearchModalPlugin::make(),
                 FilamentAccessManagementPanel::make()
             ])

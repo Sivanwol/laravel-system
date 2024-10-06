@@ -28,6 +28,7 @@
         "jaocero/activity-timeline": "^1.2",
         "kenepa/multi-widget": "^2.0",
         "kenepa/resource-lock": "^2.1",
+        "lara-zeus/dynamic-dashboard": "^3.0",
         "lara-zeus/inline-chart": "^1.1",
         "laravel/cashier-paddle": "^2.5",
         "laravel/folio": "^1.1",
