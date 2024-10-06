@@ -7,6 +7,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 
@@ -27,18 +28,21 @@ class ActivityResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function ($query) {
-                return \Spatie\Activitylog\Models\Activity::query();
-            })
             ->columns([
                 TextColumn::make('description'),
                 TextColumn::make('subject_type'),
                 TextColumn::make('causer_type'),
-                TextColumn::make('created_at'),
+                TextColumn::make('created_at')
+                    ->date()
+                    ->sortable(),
             ])
+            ->filters([
+                // ...
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ViewAction::make(),
-            ]);
+            ])
+            ->paginated([10, 25, 50]);
     }
 
 

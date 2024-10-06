@@ -12,10 +12,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
+use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens,HasFactory, Notifiable, SoftDeletes, Prunable;
+    use HasApiTokens,HasFactory, Notifiable, SoftDeletes, Prunable, FilamentUserHelpers;
 
     /**
      * The attributes that are mass assignable.
