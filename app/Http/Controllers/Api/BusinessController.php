@@ -17,9 +17,37 @@ class BusinessController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        Log::info('Business List request received', ['request' => $request->all()]);
+        try {
+            if (!$request->query('all')) {
+                $businesses = Business::active()->get();
+                return $this->successResponse($businesses);
+            } else {
+                if ($request->user()->hasRole('super-admin')) {
+                    Clockwork::info('Super admin requested all businesses');
+                    $businesses = Business::all();
+                    return $this->successResponse($businesses);
+                }
+            }
+            return $this->errorResponse('Unauthorized', 403);
+        } catch (Exception $e) {
+            // Log the detailed exception for internal debugging
+            Log::error('Business List failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'request' => $request->all(),
+            ]);
+            Clockwork::error('Business List failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'request' => $request->all(),
+            ]);
+
+            // Return a general error response to the client
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 
     /**
@@ -77,9 +105,20 @@ class BusinessController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        $business = Business::find($id);
+        if ($business) {
+            if ($business->active_at) {
+                return $this->successResponse($business);
+            } else {
+                if ($request->user()->hasRole('super-admin')) {
+                    return $this->successResponse($business);
+                }
+                return $this->errorResponse('Business is inactive.', 400);
+            }
+        }
+        return $this->errorResponse('Business not found.', 404);
     }
 
     /**
@@ -95,6 +134,37 @@ class BusinessController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        log::info('Deactivating business', ['business_id' => $id]);
+        try {
+            $business = Business::find($id);
+            if ($business) {
+                if ($business->owner_user_id !== auth()->id()) {
+                    if (!auth()->user()->hasRole('super-admin')) {
+                        return $this->errorResponse('Unauthorized', 403);
+                    }
+                }
+                $business->active_at = null;
+                $business->save();
+                Clockwork::info('Business deactivated successfully', ['business_id' => $id]);
+                return $this->successResponse(null, 'Business deactivated successfully.');
+            }
+            return $this->errorResponse('Business not found.', 404);
+
+        } catch (Exception $e) {
+            // Log the detailed exception for internal debugging
+            Log::error('Business Delete failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'business_id' => $id,
+            ]);
+            Clockwork::error('Business creation failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'business_id' => $id,
+            ]);
+
+            // Return a general error response to the client
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 }

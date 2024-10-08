@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model {
-    use HasFactory; 
+    use HasFactory;
 
     // Define the table name if it's not following Laravel's naming convention
     protected $table = 'business';
@@ -34,9 +34,11 @@ class Business extends Model {
         'business-size',
     ];
 
-    // Define relationships
+    public function scopeActive($query)
+    {
+        return $query->whereNotNull('active_at');
+    }
 
-    // Each Business belongs to an Owner (User)
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_user_id');
