@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Pages\Pulse;
 use Awcodes\LightSwitch\Enums\Alignment;
 use Awcodes\LightSwitch\LightSwitchPlugin;
 use Awcodes\Recently\RecentlyPlugin;
@@ -46,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Pulse::class
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
@@ -76,10 +77,7 @@ class AdminPanelProvider extends PanelProvider
                 DebuggerPlugin::make()
                     ->authorize(condition: fn() => auth()->user()->can('view.debuggers'))
                     ->horizonNavigation(
-                        condition: fn () => auth()->user()->can('view.horizon'),
-                        label: 'Horizon',
-                        url: url('horizon'),
-                        openInNewTab: fn () => true
+                        condition: fn () => false,
                     )
                     ->telescopeNavigation(
                         condition: fn()=> auth()->user()->can('view.telescope'),
