@@ -2,10 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\ApiResponseTrait;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterBusinessRequest extends FormRequest
 {
+    use ApiResponseTrait;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -76,5 +80,17 @@ class RegisterBusinessRequest extends FormRequest
             'timezone.required' => 'The timezone is required.',
             'business-size.required' => 'Please select a valid business size.',
         ];
+    } /**
+      * Handle a failed validation attempt.
+      *
+      * @param Validator $validator
+      * @throws HttpResponseException
+      */
+    protected function failedValidation(Validator $validator)
+    {
+        // Return a detailed JSON response with the validation errors
+        throw new HttpResponseException(
+            $this->validationErrorResponse($validator->errors()->all(), 'Validation errors', 401)
+        );
     }
 }
