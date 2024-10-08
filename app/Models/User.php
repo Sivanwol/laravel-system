@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Business;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use \Illuminate\Database\Eloquent\Builder;
@@ -51,6 +52,10 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function business()
+    {
+        return $this->hasOne(Business::class, 'owner_user_id');
     }
     public function canAccessPanel(Panel $panel): bool
     {
