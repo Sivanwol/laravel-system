@@ -51,6 +51,32 @@ class BusinessController extends Controller
         }
     }
 
+    public function stats(string $id)
+    {
+        Log::info('Business Stats request received', ['business_id' => $id]);
+        Clockwork::info('Business Stats request received', ['business_id' => $id]);
+
+        try {
+            $business = Business::find($id);
+            if ($business) {
+                $stats = $business->stats();
+                return $this->successResponse($stats);
+            }
+            return $this->errorResponse('Business not found.', 404);
+        } catch (Exception $e) {
+            Log::error('Business Stats failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'business_id' => $id,
+            ]);
+            Clockwork::error('Business Stats failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'business_id' => $id,
+            ]);
+            return $this->errorResponse('An error occurred while fetching business stats.', 500);
+        }
+
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -145,13 +171,12 @@ class BusinessController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBusinessRequest $request)
+    public function update(UpdateBusinessRequest $request, string $id)
     {
         try {
-            Log::info('Business Update request received', [ 'request' => $request->all()]);
+            Log::info('Business Update request received', ['request' => $request->all()]);
             $validatedRequest = $request->validated();
-            $business_id = $validatedRequest['business_id'];
-            $business = Business::find($business_id);
+            $business = Business::find($id);
             if ($business) {
                 if ($business->owner_user_id !== auth()->id()) {
                     if (!auth()->user()->hasRole('super-admin')) {
@@ -162,7 +187,7 @@ class BusinessController extends Controller
                 $business->update($validatedRequest);
                 return $this->successResponse($business, 'Business updated successfully.');
             }
-            return $this->errorResponse('Business not found.', 404);            
+            return $this->errorResponse('Business not found.', 404);
         } catch (Exception $e) {
             // Log the detailed exception for internal debugging
             Log::error('Business Update failed: ' . $e->getMessage(), [

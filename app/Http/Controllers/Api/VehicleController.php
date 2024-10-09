@@ -30,6 +30,16 @@ class VehicleController extends Controller
     {
         //
     }
+    
+    public function update_status(Request $request, string $id)
+    {
+        //
+    }
+    
+    public function update_mileage(Request $request, string $id)
+    {
+        //
+    }
 
     /**
      * Update the specified resource in storage.

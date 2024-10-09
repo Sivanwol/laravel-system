@@ -32,7 +32,6 @@ class UpdateBusinessRequest extends FormRequest
     public function rules()
     {
         return [
-            'business_id' => 'required|integer',              // Business ID is required, must be an integer
             'name' => 'nullable|string|max:255',              // Business name is required, max 255 characters
             'description' => 'nullable|string',               // Description is optional
             'website' => 'nullable|url',                      // Website is optional, but must be a valid URL
@@ -74,7 +73,6 @@ class UpdateBusinessRequest extends FormRequest
     public function messages()
     {
         return [
-            'business_id.required' => 'The business ID is required.',
             'name.required' => 'The business name is required.',
             'website.url' => 'The website must be a valid URL.',
             'email.email' => 'The email must be a valid email address.',

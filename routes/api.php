@@ -12,7 +12,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/list', 'BusinessController@index');
         Route::get('/{id}', 'BusinessController@show');
         Route::post('/', 'BusinessController@store');
-        Route::put('/', 'BusinessController@update');
-        Route::delete('/', 'BusinessController@destroy');
+        Route::put('/{id}', 'BusinessController@update');
+        Route::delete('/{id}', 'BusinessController@destroy');
     });
 });
