@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterBusinessRequest;
+use App\Http\Requests\Business\RegisterBusinessRequest;
+use App\Http\Requests\Business\UpdateBusinessRequest;
 use App\Traits\ApiResponseTrait;
 use Business;
 use Clockwork;
@@ -107,26 +108,77 @@ class BusinessController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $business = Business::find($id);
-        if ($business) {
-            if ($business->active_at) {
-                return $this->successResponse($business);
-            } else {
-                if ($request->user()->hasRole('super-admin')) {
+        try {
+            Log::info('Business details request received', ['business_id' => $id]);
+            Clockwork::info('Business details request received', ['business_id' => $id]);
+            $business = Business::find($id);
+            if ($business) {
+                if ($business->active_at) {
                     return $this->successResponse($business);
+                } else {
+                    if ($request->user()->hasRole('super-admin')) {
+                        Clockwork::info('Super admin requested inactive business details', ['business_id' => $id]);
+                        return $this->successResponse($business);
+                    }
+                    return $this->errorResponse('Business is inactive.', 400);
                 }
-                return $this->errorResponse('Business is inactive.', 400);
             }
+            return $this->errorResponse('Business not found.', 404);
+        } catch (Exception $e) {
+            // Log the detailed exception for internal debugging
+            Log::error('Business creation failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'request' => $request->all(),
+            ]);
+            Clockwork::error('Business creation failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'request' => $request->all(),
+            ]);
+
+            // Return a general error response to the client
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
         }
-        return $this->errorResponse('Business not found.', 404);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBusinessRequest $request)
     {
-        //
+        try {
+            Log::info('Business Update request received', [ 'request' => $request->all()]);
+            $validatedRequest = $request->validated();
+            $business_id = $validatedRequest['business_id'];
+            $business = Business::find($business_id);
+            if ($business) {
+                if ($business->owner_user_id !== auth()->id()) {
+                    if (!auth()->user()->hasRole('super-admin')) {
+                        return $this->errorResponse('Unauthorized', 403);
+                    }
+                }
+                unset($validatedRequest['business_id']); // Remove business_id from the request as it is not needed
+                $business->update($validatedRequest);
+                return $this->successResponse($business, 'Business updated successfully.');
+            }
+            return $this->errorResponse('Business not found.', 404);            
+        } catch (Exception $e) {
+            // Log the detailed exception for internal debugging
+            Log::error('Business Update failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'request' => $request->all(),
+            ]);
+            Clockwork::error('Business Update failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'user_id' => $user->id ?? 'guest',
+                'request' => $request->all(),
+            ]);
+
+            // Return a general error response to the client
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 
     /**
