@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
+use BaseApiController;
 use Illuminate\Http\Request;
 use Log;
 
-class CommonController extends Controller
+class CommonController extends BaseApiController
 {
-    use ApiResponseTrait;
     public function get_countries()
     {
         Log::info('Countries request received');

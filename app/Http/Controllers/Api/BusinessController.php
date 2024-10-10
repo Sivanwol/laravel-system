@@ -6,15 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Business\RegisterBusinessRequest;
 use App\Http\Requests\Business\UpdateBusinessRequest;
 use App\Traits\ApiResponseTrait;
+use BaseApiController;
 use Business;
 use Clockwork;
 use Exception;
 use Illuminate\Http\Request;
 use Log;
 
-class BusinessController extends Controller
+class BusinessController extends BaseApiController
 {
-    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      */
