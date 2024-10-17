@@ -4,7 +4,7 @@ namespace App\Http\Requests\Vehicles;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterVehicleRequest extends FormRequest
+class UpdateVehicleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,9 +36,6 @@ class RegisterVehicleRequest extends FormRequest
             'max_km_per_run' => 'required|integer|min:0',
             'max_weight' => 'required|integer|min:0',
             'has_cooling' => 'boolean',
-            'mileage' => 'required|integer|min:0',
-            'status' => 'required|in:active,inactive,maintenance,repair,other',
-            'other_status' => 'nullable|string|max:100',
         ];
     }
     /**
@@ -68,27 +65,19 @@ class RegisterVehicleRequest extends FormRequest
             'max_weight.integer' => 'The maximum weight must be an integer.',
             'max_weight.min' => 'The maximum weight must be at least 0.',
             'has_cooling.boolean' => 'The has cooling field must be true or false.',
-            'mileage.required' => 'The mileage is required.',
-            'mileage.integer' => 'The mileage must be an integer.',
-            'mileage.min' => 'The mileage must be at least 0.',
-            'status.required' => 'The status is required.',
-            'status.in' => 'The selected status is invalid.',
-            'other_status.string' => 'The other status must be a string.',
-            'other_status.max' => 'The other status may not be greater than 100 characters.',
         ];
     }
 
-    /**
-     * Prepare the data for validation.
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'is_manual' => $this->is_manual ?? false,
-            'is_electric' => $this->is_electric ?? false,
-            'has_cooling' => $this->has_cooling ?? false,
-            'other_vehicle_type' => $this->other_vehicle_type ?? null,
-            'other_status' => $this->status === 'other' ? $this->other_status : null,
-        ]);
-    }
+        /**
+         * Prepare the data for validation.
+         */
+        protected function prepareForValidation()
+        {
+            $this->merge([
+                'is_manual' => $this->is_manual ?? false,
+                'is_electric' => $this->is_electric ?? false,
+                'has_cooling' => $this->has_cooling ?? false,
+                'other_vehicle_type' => $this->other_vehicle_type ?? null,
+            ]);
+        }
 }

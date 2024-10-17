@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vehicles\MilageUpdateVehicleRequest;
 use App\Http\Requests\Vehicles\RegisterVehicleRequest;
+use App\Http\Requests\Vehicles\StatusUpdateVehicleRequest;
+use App\Http\Requests\Vehicles\UpdateVehicleRequest;
 use App\Models\Vehicle;
 use BaseApiController;
 use Business;
@@ -99,8 +102,8 @@ class VehicleController extends BaseApiController
      */
     public function show(int $business_id)
     {
-        Log::info('Vehicle request received', ['business_id' => $business_id]);
-        Clockwork::info('Vehicle request received', ['business_id' => $business_id]);
+        Log::info('show all Vehicle request received', ['business_id' => $business_id]);
+        Clockwork::info('shoaw all Vehicle request received', ['business_id' => $business_id]);
         try {
             $business = Business::find($business_id);
             if (!$business) {
@@ -128,34 +131,148 @@ class VehicleController extends BaseApiController
         }
     }
 
-    public function update_status(Request $request, string $id)
+    public function update_status(StatusUpdateVehicleRequest $request, string $id)
     {
-        //
+        Log::info('update Vehicle status request received', ['vehicle_id' => $id]);
+        Clockwork::info('update Vehicle status request received', ['vehicle_id' => $id]);
+        try {
+            $response = $request->validated();
+            $vehicle = Vehicle::find($id);
+            if (!$vehicle) {
+                return $this->notFoundResponse('Vehicle not found');
+            }
+            $business = Business::find($response['business_id']);
+            if (!$business) {
+                return $this->notFoundResponse('Business not found');
+            }
+            $businessVehicle = $business->vehicles()->where('vehicle_id', $id)->first();
+            if (!$businessVehicle) {
+                return $this->notFoundResponse('Vehicle not found in this business');
+            }
+            $businessVehicle->status = $response['status'];
+            $businessVehicle->other_status = $response['other_status'];
+            $businessVehicle->save();
+            return $this->successResponse('Vehicle status updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in VehicleController@update_status', ['message' => $e->getMessage()]);
+            Clockwork::error('Error in VehicleController@update_status', ['message' => $e->getMessage()]);
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 
-    public function update_mileage(Request $request, string $id)
+    public function update_mileage(MilageUpdateVehicleRequest $request, string $id)
     {
-        //
+        Log::info('update Vehicle mileage request received', ['vehicle_id' => $id]);
+        Clockwork::info('update Vehicle mileage request received', ['vehicle_id' => $id]);
+        try {
+            $response = $request->validated();
+            $vehicle = Vehicle::find($id);
+            if (!$vehicle) {
+                return $this->notFoundResponse('Vehicle not found');
+            }
+            $business = Business::find($response['business_id']);
+            if (!$business) {
+                return $this->notFoundResponse('Business not found');
+            }
+            $businessVehicle = $business->vehicles()->where('vehicle_id', $id)->first();
+            if (!$businessVehicle) {
+                return $this->notFoundResponse('Vehicle not found in this business');
+            }
+            $businessVehicle->mileage = $response['mileage'];
+            $businessVehicle->save();
+            return $this->successResponse('Vehicle mileage updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in VehicleController@update_mileage', ['message' => $e->getMessage()]);
+            Clockwork::error('Error in VehicleController@update_mileage', ['message' => $e->getMessage()]);
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateVehicleRequest $request, string $id)
     {
-        //
+        Log::info('update Vehicle request received', ['vehicle_id' => $id]);
+        Clockwork::info('update Vehicle request received', ['vehicle_id' => $id]);
+        try {
+            $response = $request->validated();
+            $vehicle = Vehicle::find($id);
+            if (!$vehicle) {
+                return $this->notFoundResponse('Vehicle not found');
+            }
+            $vehicle->fill($response);
+            $vehicle->save();
+            return $this->successResponse('Vehicle updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in VehicleController@update', ['message' => $e->getMessage()]);
+            Clockwork::error('Error in VehicleController@update', ['message' => $e->getMessage()]);
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 
     public function removeFromBusiness(int $business_id, string $id)
     {
-        //
+        Log::info('remove Vehicle request received', ['business_id' => $business_id, 'vehicle_id' => $id]);
+        Clockwork::info('remove Vehicle request received', ['business_id' => $business_id, 'vehicle_id' => $id]);
+        try {
+            $business = Business::find($business_id);
+            if (!$business) {
+                return $this->notFoundResponse('Business not found');
+            }
+            $vehicle = Vehicle::find($id);
+            if (!$vehicle) {
+                return $this->notFoundResponse('Vehicle not found');
+            }
+            $business->removeVehicle($id);
+            return $this->successResponse('Vehicle removed from business successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in VehicleController@removeFromBusiness', ['message' => $e->getMessage()]);
+            Clockwork::error('Error in VehicleController@removeFromBusiness', ['message' => $e->getMessage()]);
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 
+    public function removeAllVehiclesFromBusiness(int $business_id)
+    {
+        Log::info('remove all Vehicle request received', ['business_id' => $business_id]);
+        Clockwork::info('remove all Vehicle request received', ['business_id' => $business_id]);
+        try {
+            $business = Business::find($business_id);
+            if (!$business) {
+                return $this->notFoundResponse('Business not found');
+            }
+            $business->vehicles()->detach();
+            return $this->successResponse('All vehicles removed from business successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in VehicleController@removeAllVehiclesFromBusiness', ['message' => $e->getMessage()]);
+            Clockwork::error('Error in VehicleController@removeAllVehiclesFromBusiness', ['message' => $e->getMessage()]);
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $business_id,string $id)
     {
-        //
+        Log::info('delete Vehicle request received', ['business_id'=> $business_id,'vehicle_id' => $id]);
+        Clockwork::info('delete Vehicle request received', ['business_id'=> $business_id,'vehicle_id' => $id]);
+        try {
+            $business = Business::find($business_id);
+            if (!$business) {
+                return $this->notFoundResponse('Business not found');
+            }
+            $vehicle = Vehicle::find($id);
+            if (!$vehicle) {
+                return $this->notFoundResponse('Vehicle not found');
+            }
+            $business->removeVehicle($id);
+            $vehicle->delete();
+            return $this->successResponse('Vehicle deleted successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in VehicleController@destroy', ['message' => $e->getMessage()]);
+            Clockwork::error('Error in VehicleController@destroy', ['message' => $e->getMessage()]);
+            return $this->errorResponse('An error occurred while creating the business. Please try again later.', 500);
+        }
     }
 }
