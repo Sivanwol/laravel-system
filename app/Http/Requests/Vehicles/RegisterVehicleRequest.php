@@ -36,6 +36,9 @@ class RegisterVehicleRequest extends FormRequest
             'max_km_per_run' => 'required|integer|min:0',
             'max_weight' => 'required|integer|min:0',
             'has_cooling' => 'boolean',
+            'mileage' => 'required|integer|min:0',
+            'status' => 'required|in:active,inactive,maintenance,repair,other',
+            'other_status' => 'nullable|string|max:100',
         ];
     }
     /**

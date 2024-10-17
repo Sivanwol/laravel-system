@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+
 trait ApiResponseTrait
 {
     /**
@@ -28,19 +29,27 @@ trait ApiResponseTrait
      * @param int $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public function paginatedResponse($data, $message = 'Operation Successful', $code = 200)
+    public function paginatedResponse($data = [], $total = 0, $pages = 0, $per_page = 25, $has_next = false, $message = 'Operation Successful', $code = 200)
     {
         return response()->json([
             'status' => true,
             'message' => $message,
-            'data' => $data->items(),
+            'data' => $data,
             'meta' => [
-                'total' => $data->total(),
-                'count' => $data->count(),
-                'per_page' => $data->perPage(),
-                'current_page' => $data->currentPage(),
-                'total_pages' => $data->lastPage(),
+                'total' => $total,
+                'pages' => $pages,
+                'per_page' => $per_page,
+                'has_next_page' => $has_next,
             ],
+        ], $code);
+    }
+
+    public function notFoundResponse($message = 'Resource Not Found', $code = 404)
+    {
+        return response()->json([
+            'status' => false,
+            'message' => $message,
+            'data' => null,
         ], $code);
     }
     /**

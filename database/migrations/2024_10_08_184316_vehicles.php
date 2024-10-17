@@ -38,13 +38,12 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('business_vehicles', function (Blueprint $table) {
+        Schema::create('business_has_vehicles', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('vehicle_id');
             $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
             $table->unsignedInteger('business_id');
             $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
-            $table->string('description', 500)->nullable();
             $table->integer('milage')->nullable();
             $table->enum('status', ['active', 'inactive', 'maintenance', 'repair', 'other'])->default('active');
             $table->string('other_status', 100)->nullable();

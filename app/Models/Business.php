@@ -47,9 +47,23 @@ class Business extends Model
 
     public function vehicles()
     {
-        return $this->belongsToMany(Vehicle::class, 'business_vehicles')
+        return $this->belongsToMany(Vehicle::class, 'entity_has_vehicles')
             ->withPivot(['description', 'milage', 'status', 'other_status'])
             ->withTimestamps();
+    }
+
+    public function addVehicle($vehicle_id, $milage = null, $status = 'active', $other_status = null)
+    {
+        $this->vehicles()->attach($vehicle_id, [
+            'milage' => $milage,
+            'status' => $status,
+            'other_status' => $other_status,
+        ]);
+    }
+
+    public function removeVehicle($vehicle_id)
+    {
+        $this->vehicles()->detach($vehicle_id);
     }
 
     public function stats()
