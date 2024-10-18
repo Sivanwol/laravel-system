@@ -131,7 +131,7 @@ class VehicleController extends BaseApiController
         }
     }
 
-    public function update_status(StatusUpdateVehicleRequest $request, string $id)
+    public function updateStatus(StatusUpdateVehicleRequest $request,int $business_id, string $id)
     {
         Log::info('update Vehicle status request received', ['vehicle_id' => $id]);
         Clockwork::info('update Vehicle status request received', ['vehicle_id' => $id]);
@@ -141,7 +141,7 @@ class VehicleController extends BaseApiController
             if (!$vehicle) {
                 return $this->notFoundResponse('Vehicle not found');
             }
-            $business = Business::find($response['business_id']);
+            $business = Business::find($business_id);
             if (!$business) {
                 return $this->notFoundResponse('Business not found');
             }
@@ -160,7 +160,7 @@ class VehicleController extends BaseApiController
         }
     }
 
-    public function update_mileage(MilageUpdateVehicleRequest $request, string $id)
+    public function updateMileage(MilageUpdateVehicleRequest $request, int $business_id,string $id)
     {
         Log::info('update Vehicle mileage request received', ['vehicle_id' => $id]);
         Clockwork::info('update Vehicle mileage request received', ['vehicle_id' => $id]);
@@ -170,7 +170,7 @@ class VehicleController extends BaseApiController
             if (!$vehicle) {
                 return $this->notFoundResponse('Vehicle not found');
             }
-            $business = Business::find($response['business_id']);
+            $business = Business::find($business_id);
             if (!$business) {
                 return $this->notFoundResponse('Business not found');
             }
@@ -191,7 +191,7 @@ class VehicleController extends BaseApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVehicleRequest $request, string $id)
+    public function update(UpdateVehicleRequest $request,int $business_id, string $id)
     {
         Log::info('update Vehicle request received', ['vehicle_id' => $id]);
         Clockwork::info('update Vehicle request received', ['vehicle_id' => $id]);
@@ -201,6 +201,17 @@ class VehicleController extends BaseApiController
             if (!$vehicle) {
                 return $this->notFoundResponse('Vehicle not found');
             }
+
+            $business = Business::find($business_id);
+            if (!$business) {
+                return $this->notFoundResponse('Business not found');
+            }
+
+            $businessVehicle = $business->vehicles()->where('vehicle_id', $id)->first();
+            if (!$businessVehicle) {
+                return $this->notFoundResponse('Vehicle not found in this business');
+            }
+
             $vehicle->fill($response);
             $vehicle->save();
             return $this->successResponse('Vehicle updated successfully');
