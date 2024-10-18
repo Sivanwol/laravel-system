@@ -8,6 +8,7 @@ use App\Http\Requests\Business\UpdateBusinessRequest;
 use App\Traits\ApiResponseTrait;
 use BaseApiController;
 use Business;
+use BusinessHelperTrait;
 use Clockwork;
 use Exception;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -19,6 +20,7 @@ use Log;
 class BusinessController extends BaseApiController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use BusinessHelperTrait;
     /**
      * Display a listing of the resource.
      */
