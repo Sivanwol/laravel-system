@@ -67,6 +67,10 @@ class User extends Authenticatable implements FilamentUser
     {
         return str_ends_with($this->email, '@wolberg.pro') && $this->hasVerifiedEmail();
     }
+    public function updateSupportLanguage(array $languageIds)
+    {
+        $this->supportLanguage()->sync($languageIds);
+    }
     /**
      * Get the prunable model query.
      */
