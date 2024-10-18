@@ -17,25 +17,25 @@ class RoleSeeder extends Seeder
     {
         sleep(1);
         $role = Role::create([
-            'name' => 'delivery',
+            'name' => config('constants.system_roles.delivery'),
             'guard_name' => 'web',
         ]);
         $role->syncPermissions(['fleet-limited', 'fleet-limited', 'delivery-profile']);
 
         $role = Role::create([
-            'name' => 'business',
+            'name' => config('constants.system_roles.business'),
             'guard_name' => 'web',
         ]);
         $role->syncPermissions(['business-profile', 'fleet']);
 
         $role = Role::create([
-            'name' => 'delivery-business',
+            'name' => config('constants.system_roles.delivery_business'),
             'guard_name' => 'web',
         ]);
         $role->syncPermissions(['business-profile', 'delivery-profile', 'delivery-packages', 'fleet']);
 
         $role = Role::create([
-            'name' => 'super-admin',
+            'name' => config('constants.system_roles.platform_admin'),
             'guard_name' => 'web',
         ]);
         $role->syncPermissions(['support', 'billing', 'user-management']);

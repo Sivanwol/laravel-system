@@ -74,4 +74,9 @@ class Business extends Model
             'total_vehicles' => $totalVehicles,
         ];
     }
+
+    public static function hasUserIsOwner($businessId, $userId)
+    {
+        return Business::where('id', $businessId)->where('owner_user_id', $userId)->exists();
+    }
 }

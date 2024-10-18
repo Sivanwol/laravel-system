@@ -10,11 +10,15 @@ use BaseApiController;
 use Business;
 use Clockwork;
 use Exception;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Laravel\Telescope\AuthorizesRequests;
 use Log;
 
 class BusinessController extends BaseApiController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     /**
      * Display a listing of the resource.
      */
