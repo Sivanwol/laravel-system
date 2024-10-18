@@ -23,12 +23,37 @@ class UserController extends BaseApiController
      */
     public function me()
     {
-        //
+        Log::info('request my profile', ['user_id' => auth()->id()]);
+        Clockwork::info('request my profile', ['user_id' => auth()->id()]);
+        try {
+            return $this->successResponse($this->getUserProfile(auth()->id(), trait_uses_recursive));
+        } catch (\Exception $e) {
+            Log::error('error getting my profile', ['user_id' => auth()->id(), 'error' => $e->getMessage()]);
+            Clockwork::error('error getting my profile', ['user_id' => auth()->id(), 'error' => $e->getMessage()]);
+            return $this->errorResponse('error getting my profile', 500);
+        }
     }
 
     public function profile(int $userId)
     {
-        //
+        Log::info('request user profile', ['user_id' => $userId]);
+        Clockwork::info('request user profile', ['user_id' => $userId]);
+        try {
+            $extendProfile = $this->hasRole(config('permission.roles.super-admin'));
+            if (auth()->user()->id !== $userId) {
+                if (!$this->hasRole(config('permission.roles.super-admin'))) {
+                    $extendProfile  = false;
+                }
+            }
+            if ($this->hasRole(config('permission.roles.super-admin'))) {
+                Clockwork::info('super admin getting user profile', ['user_id' => $userId]);
+            }
+            return $this->successResponse($this->getUserProfile($userId, $extendProfile));
+        } catch (\Exception $e) {
+            Log::error('error getting user profile', ['user_id' => $userId, 'error' => $e->getMessage()]);
+            Clockwork::error('error getting user profile', ['user_id' => $userId, 'error' => $e->getMessage()]);
+            return $this->errorResponse('error getting user profile', 500);
+        }
     }
 
     public function update(Request $request, int $userId)
