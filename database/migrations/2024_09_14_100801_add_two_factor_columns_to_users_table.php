@@ -17,6 +17,9 @@ return new class extends Migration
                 ->after('password')
                 ->nullable();
 
+            $table->enum('two_factor_type', ['email', 'phone'])
+                ->default('email');
+
             $table->text('two_factor_recovery_codes')
                 ->after('two_factor_secret')
                 ->nullable();
