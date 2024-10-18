@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $english = DB::table('languages')->where('code', 'en')->first();
+        $hebrew = DB::table('languages')->where('code', 'he')->first();
+        $spanish = DB::table('languages')->where('code', 'es')->first();
         $user = User::factory()->create([
             'first_name' => 'Admin',
             'last_name' => 'User',
@@ -23,6 +27,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $user->assignRole('super-admin');
+        $user->languages()->attach($english->id);
 
         $user = User::factory()->create([
             'first_name' => 'Delivery',
@@ -34,6 +39,8 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $user->assignRole('delivery');
+        $user->languages()->attach($english->id);
+        $user->languages()->attach($hebrew->id);
 
         $user = User::factory()->create([
             'first_name' => 'Business',
@@ -45,6 +52,8 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $user->assignRole('business');
+        $user->languages()->attach($english->id);
+        $user->languages()->attach($hebrew->id);
 
         $user = User::factory()->create([
             'first_name' => 'Delivery Business',
@@ -56,5 +65,8 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $user->assignRole('delivery-business');
+        $user->languages()->attach($english->id);
+        $user->languages()->attach($hebrew->id);
+        $user->languages()->attach($spanish->id);
     }
 }

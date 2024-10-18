@@ -77,7 +77,7 @@ class VehicleController extends BaseApiController
         try {
 
             if ($business_id && $model_type === 'Business') {
-                if ($this->isBusiness() === false && $this->isSuperAdmin() === false) {
+                if ($this->isBusiness() === false || $this->isSuperAdmin() === false) {
                     return $this->errorResponse('You do not have permission to perform this action', 403);
                 }
                 $business = Business::find($business_id);
@@ -153,7 +153,7 @@ class VehicleController extends BaseApiController
         Log::info('update Vehicle status request received', ['vehicle_id' => $id]);
         Clockwork::info('update Vehicle status request received', ['vehicle_id' => $id]);
         try {
-            if ($this->isBusiness() === false && $this->isSuperAdmin() === false) {
+            if ($this->isBusiness() === false || $this->isSuperAdmin() === false) {
                 return $this->errorResponse('You do not have permission to perform this action', 403);
             }
             $business = Business::find($business_id);
@@ -192,7 +192,7 @@ class VehicleController extends BaseApiController
         Log::info('update Vehicle mileage request received', ['vehicle_id' => $id]);
         Clockwork::info('update Vehicle mileage request received', ['vehicle_id' => $id]);
         try {
-            if ($this->isBusiness() === false && $this->isSuperAdmin() === false) {
+            if ($this->isBusiness() === false || $this->isSuperAdmin() === false) {
                 return $this->errorResponse('You do not have permission to perform this action', 403);
             }
             $business = Business::find($business_id);
@@ -233,7 +233,7 @@ class VehicleController extends BaseApiController
         Log::info('update Vehicle request received', ['vehicle_id' => $id]);
         Clockwork::info('update Vehicle request received', ['vehicle_id' => $id]);
         try {
-            if ($this->isBusiness() === false && $this->isSuperAdmin() === false) {
+            if ($this->isBusiness() === false || $this->isSuperAdmin() === false) {
                 return $this->errorResponse('You do not have permission to perform this action', 403);
             }
             $business = Business::find($business_id);
@@ -278,7 +278,7 @@ class VehicleController extends BaseApiController
         Log::info('remove Vehicle request received', ['business_id' => $business_id, 'vehicle_id' => $id]);
         Clockwork::info('remove Vehicle request received', ['business_id' => $business_id, 'vehicle_id' => $id]);
         try {
-            if ($this->isBusiness() === false && $this->isSuperAdmin() === false) {
+            if ($this->isBusiness() === false || $this->isSuperAdmin() === false) {
                 return $this->errorResponse('You do not have permission to perform this action', 403);
             }
             $business = Business::find($business_id);

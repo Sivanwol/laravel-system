@@ -25,6 +25,21 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('languages', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 50)->unique();
+            $table->string('code', 4)->unique();
+            $table->boolean('is_supported')->default(true);
+        });
+
+        Schema::create('user_languages', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('language_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+            $table->unique(['user_id', 'language_id']);
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');

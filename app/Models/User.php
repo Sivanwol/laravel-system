@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
+use Languages;
 use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -56,6 +57,11 @@ class User extends Authenticatable implements FilamentUser
     public function business()
     {
         return $this->hasOne(Business::class, 'owner_user_id');
+    }
+
+    public function supportLanguage()
+    {
+        return $this->belongsToMany(Languages::class, 'user_languages');
     }
     public function canAccessPanel(Panel $panel): bool
     {
