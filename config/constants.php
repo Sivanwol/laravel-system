@@ -14,6 +14,14 @@ return [
         'c+d' => 'C+D',
         'f' => 'F',
     ],
+    'country_IL_region' => [
+        'north' => 'North',
+        'south' => 'South',
+        'sharon' => 'Sharon',
+        'dan' => 'Dan',
+        'shfela' => 'Shfela',
+        'jerusalem' => 'Jerusalem',
+    ],
     'system_roles' => [
         'platform_admin' => 'super_admin',
         'business' => 'business',

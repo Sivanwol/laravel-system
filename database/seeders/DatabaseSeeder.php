@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use LanguageSeeder;
 
 class DatabaseSeeder extends Seeder
 {

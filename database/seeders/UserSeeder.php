@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
-        $user->assignRole('super-admin');
+        $user->assignRole(config('constants.system_roles.platform_admin'));
         $user->languages()->attach($english->id);
 
         $user = User::factory()->create([
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
-        $user->assignRole('delivery');
+        $user->assignRole(config('constants.system_roles.delivery'));
         $user->languages()->attach($english->id);
         $user->languages()->attach($hebrew->id);
 
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
-        $user->assignRole('business');
+        $user->assignRole(config('constants.system_roles.business'));
         $user->languages()->attach($english->id);
         $user->languages()->attach($hebrew->id);
 
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
-        $user->assignRole('delivery-business');
+        $user->assignRole(config('constants.system_roles.delivery_business'));
         $user->languages()->attach($english->id);
         $user->languages()->attach($hebrew->id);
         $user->languages()->attach($spanish->id);

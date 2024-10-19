@@ -20,7 +20,18 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->date('dob')->nullable();
             $table->datetime('allow_preform_deliveries')->nullable();
+            $table->string('profile_image', 500)->nullable();
+            $table->string('about_me', 1000)->nullable();
+            $table->string('country_code', 10)->nullable();
+            $table->string('country_region', )->nullable();
+            $table->string('city', 100)->nullable();
+            $table->string('address', 500)->nullable();
+            $table->string('zip_code', 20)->nullable();
+            $table->string('apartment_number', 10)->nullable();
+            $table->string('building_number', 10)->nullable();
+            $table->smallInteger('floor_number')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

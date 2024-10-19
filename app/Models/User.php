@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Business;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use \Illuminate\Database\Eloquent\Builder;
@@ -13,7 +12,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
-use Languages;
 use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -27,9 +25,21 @@ class User extends Authenticatable implements FilamentUser
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'phone',
+        'country_code',
+        'country_region',
+        'city',
+        'address',
+        'zip_code',
+        'allow_preform_deliveries',
+        'apartment_number',
+        'building_number',
+        'floor_number',
+        'dob',
     ];
 
     /**
@@ -50,7 +60,11 @@ class User extends Authenticatable implements FilamentUser
     protected function casts(): array
     {
         return [
+            'phone_verified_at' => 'datetime',
             'email_verified_at' => 'datetime',
+            'dob' => 'date',
+            'floor_number' => 'integer',
+            'allow_preform_deliveries' => 'boolean',
             'password' => 'hashed',
         ];
     }
@@ -66,6 +80,10 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@wolberg.pro') && $this->hasVerifiedEmail();
+    }
+    public function deliver()
+    {
+        return $this->hasOne(UserDelivery::class, 'user_id');
     }
     public function updateSupportLanguage(array $languageIds)
     {
