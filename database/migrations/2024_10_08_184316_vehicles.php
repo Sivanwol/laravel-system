@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->enum('vehicle_type', ['e-bicycle', 'bike', 'car', 'van', 'small-truck', 'truck', 'sami-truck', 'bus', 'other'])->default('car');
             $table->string('other_vehicle_type', 100)->nullable();
-            $table->enum('required_driver_license', ['A', 'A1', 'A2', 'B', 'C', 'C1', 'D', 'C+E'])->default('B');
             $table->string('license_plate', 40)->unique();
             $table->boolean('is_manual')->default(false);
             $table->boolean('is_electric')->default(false);

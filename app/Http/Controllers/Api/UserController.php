@@ -25,7 +25,7 @@ class UserController extends BaseApiController
         Log::info('request my profile', ['user_id' => auth()->id()]);
         Clockwork::info('request my profile', ['user_id' => auth()->id()]);
         try {
-            return $this->successResponse($this->getUserProfile(auth()->id(), trait_uses_recursive));
+            return $this->successResponse($this->getUserProfile(auth()->id(), true));
         } catch (\Exception $e) {
             Log::error('error getting my profile', ['user_id' => auth()->id(), 'error' => $e->getMessage()]);
             Clockwork::error('error getting my profile', ['user_id' => auth()->id(), 'error' => $e->getMessage()]);

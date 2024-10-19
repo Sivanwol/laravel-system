@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->datetime('allow_preform_deliveries')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
@@ -61,6 +62,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('languages');
+        Schema::dropIfExists('user_languages');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
