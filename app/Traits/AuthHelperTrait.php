@@ -1,4 +1,4 @@
-<?
+<?php
 namespace App\Traits;
 trait AuthHelperTrait {
     public function hasRole($roles = [], $guard = 'web') {

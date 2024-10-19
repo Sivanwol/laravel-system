@@ -1,4 +1,7 @@
-<?
+<?php
+namespace App\Traits;
+
+use App\Models\Languages;
 trait UserHelperTrait {
     public function validateSupportedLanguages( $language_ids) {
         $supportedLanguages = Languages::all()->pluck('code')->where('is_supported', '=', true)->toArray();

@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseApiController;
 use App\Http\Requests\Vehicles\MilageUpdateVehicleRequest;
 use App\Http\Requests\Vehicles\RegisterVehicleRequest;
 use App\Http\Requests\Vehicles\StatusUpdateVehicleRequest;
 use App\Http\Requests\Vehicles\UpdateVehicleRequest;
+use App\Models\Business;
 use App\Models\Vehicle;
-use BaseApiController;
-use Business;
-use BusinessHelperTrait;
+use App\Traits\BusinessHelperTrait;
 use Clockwork;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Laravel\Telescope\AuthorizesRequests;
 use Log;
 

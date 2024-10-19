@@ -1,4 +1,4 @@
-<?
+<?php
 return [
     'driver_types' => [
         'a1' => 'A1',

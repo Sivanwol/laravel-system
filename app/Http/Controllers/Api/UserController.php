@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseApiController;
 use App\Http\Requests\Vehicles\SupportedLanguagesUpdateUserRequest;
 use App\Models\User;
-use BaseApiController;
+use App\Traits\UserHelperTrait;
 use Clockwork;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Laravel\Telescope\AuthorizesRequests;
 use Log;
-use UserHelperTrait;
 
 class UserController extends BaseApiController
 {

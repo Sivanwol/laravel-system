@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Business;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BusinessVehicle extends Model
 {
-    use HasFactory; 
+    use HasFactory;
     // Define the table if it's not following Laravel's naming convention (singular, lowercase table names)
     protected $table = 'business_vehicles';
 

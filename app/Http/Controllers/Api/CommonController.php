@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Traits\ApiResponseTrait;
-use BaseApiController;
+use App\Http\Controllers\BaseApiController;
 use DB;
-use Illuminate\Http\Request;
 use Log;
 
 class CommonController extends BaseApiController

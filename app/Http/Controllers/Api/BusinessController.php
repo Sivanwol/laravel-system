@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseApiController;
 use App\Http\Requests\Business\RegisterBusinessRequest;
 use App\Http\Requests\Business\UpdateBusinessRequest;
-use App\Traits\ApiResponseTrait;
-use BaseApiController;
-use Business;
-use BusinessHelperTrait;
+use App\Models\Business;
+use App\Traits\BusinessHelperTrait;
 use Clockwork;
 use Exception;
 use Illuminate\Foundation\Bus\DispatchesJobs;
