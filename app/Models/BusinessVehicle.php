@@ -13,15 +13,17 @@ class BusinessVehicle extends Model
 
     // Define fillable properties for mass assignment protection
     protected $fillable = [
-        'vehicle_id',
-        'entity_id',
-        'model_type',
-        'description',
         'milage',
         'status',
         'other_status',
+        'last_inspection',
+        'last_service',
     ];
 
+    protected $casts = [
+        'last_inspection' => 'datetime',
+        'last_service' => 'datetime',
+    ];
     // Relationships
 
     // Each BusinessVehicle belongs to a Vehicle
@@ -33,6 +35,6 @@ class BusinessVehicle extends Model
     // Each BusinessVehicle belongs to a Business
     public function business()
     {
-        return $this->where('model_type','=', 'business')->where('entity_id', '=', 'id');
+        return $this->belongsTo(Business::class);
     }
 }

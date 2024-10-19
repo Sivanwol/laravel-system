@@ -27,11 +27,13 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'first_name',
         'last_name',
+        'profile_image',
         'email',
         'password',
         'phone',
         'country_code',
         'country_region',
+        'about_me',
         'city',
         'address',
         'zip_code',
@@ -81,7 +83,7 @@ class User extends Authenticatable implements FilamentUser
     {
         return str_ends_with($this->email, '@wolberg.pro') && $this->hasVerifiedEmail();
     }
-    public function deliver()
+    public function delivery()
     {
         return $this->hasOne(UserDelivery::class, 'user_id');
     }

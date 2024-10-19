@@ -63,6 +63,7 @@ class UserController extends BaseApiController
         //
     }
 
+
     public function updateUserSupportedLanguage(SupportedLanguagesUpdateUserRequest $request, int $userId)
     {
         Log::info('request update user supported languages', ['user_id' => $userId, 'language_ids' => $request->language_ids]);

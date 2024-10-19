@@ -20,12 +20,14 @@ return new class extends Migration
             $table->datetime('driver_license_expiry_date')->nullable();
             $table->string('profile_image', 500)->nullable();
             $table->string('about_my_service', 1000)->nullable();
-            $table->string('about_me', 1000)->nullable();
             $table->string('youtube', 500)->nullable();
+            $table->string('telegram', 500)->nullable();
             $table->string('whatapp', 500)->nullable();
             $table->string('website', 500)->nullable();
             $table->string('facebook', 500)->nullable();
             $table->string('twitter', 500)->nullable();
+            $table->string('linkedin', 500)->nullable();
+            $table->string('tiktok', 500)->nullable();
             $table->string('instagram', 500)->nullable();
             $table->boolean('allow_physical_work')->nullable();
             $table->softDeletes();
@@ -39,6 +41,7 @@ return new class extends Migration
             $table->string('country_code', 10)->nullable();
             $table->string('country_region', 100)->nullable();
             $table->timestamps();
+            $table->unique(['user_delivery_id', 'country_code', 'country_region']);
         });
     }
 

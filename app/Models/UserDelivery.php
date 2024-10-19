@@ -18,6 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class UserDelivery extends Model
 {
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -33,10 +34,10 @@ class UserDelivery extends Model
         'linkedin',
         'youtube',
         'tiktok',
-        'snapchat',
+        'website',
         'about_my_service',
         'profile_image',
-        'about_me',
+        'about_my_service',
         'allow_physical_work',
 
     ];
@@ -58,5 +59,15 @@ class UserDelivery extends Model
     {
         return [
         ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function regions()
+    {
+        return $this->hasMany(UserDeliveryRegion::class);
     }
 }

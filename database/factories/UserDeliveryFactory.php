@@ -11,10 +11,6 @@ use Illuminate\Support\Str;
  */
 class UserDeliveryFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
 
     /**
      * Define the model's default state.
@@ -24,6 +20,7 @@ class UserDeliveryFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => UserFactory::new()->create()->id,
             'whatsapp' => fake()->url(),
             'telegram' => fake()->url(),
             'instagram' => fake()->url(),

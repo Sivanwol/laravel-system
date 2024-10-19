@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->enum('vehicle_type', ['e-bicycle', 'bike', 'car', 'van', 'small-truck', 'truck', 'sami-truck', 'bus', 'other'])->default('car');
+            $table->enum('vehicle_type', ['e-bicycle', 'bike', 'car', 'van', 'small-truck', 'truck', 'sami-truck', 'bus', 'mini-bus', 'other'])->default('car');
             $table->string('other_vehicle_type', 100)->nullable();
             $table->string('license_plate', 40)->unique();
             $table->boolean('is_manual')->default(false);
@@ -52,6 +52,22 @@ return new class extends Migration {
             $table->unique(['vehicle_id', 'business_id']);
         });
 
+
+        Schema::create('delivery_has_vehicles', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('vehicle_id');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('milage')->nullable();
+            $table->enum('status', ['active', 'inactive', 'maintenance', 'repair', 'other'])->default('active');
+            $table->string('other_status', 100)->nullable();
+            $table->dateTime('last_inspection')->nullable();
+            $table->dateTime('last_service')->nullable();
+            $table->timestamps();
+            $table->unique(['vehicle_id', 'business_id']);
+        });
+
     }
 
     /**
@@ -61,6 +77,7 @@ return new class extends Migration {
     {
         Schema::dropIfExists('vehicle_history');
         Schema::dropIfExists('business_vehicles');
+        Schema::dropIfExists('delivery_vehicles');
         Schema::dropIfExists('vehicles');
     }
 };
