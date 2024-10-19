@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->float('longitude')->nullable();
             $table->string('timezone')->default('Asia/Jerusalem');
             $table->enum('business-size', ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001-5000', '5001-10000', '10001+'])->default('11-50');
-            $table->timestamp('active_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

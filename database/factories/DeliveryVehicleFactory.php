@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BusinessVehicle>
  */
-class BusinessVehicleFactory extends Factory
+class DeliveryVehicleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class BusinessVehicleFactory extends Factory
     {
         return [
             'vehicle_id' => VehicleFactory::new()->create()->id,
-            'business_id' => BusinessFactory::new()->create()->id,
+            'user_id' => UserFactory::new()->create()->id,
             'milage' => $this->faker->randomNumber(),
             'status' => $this->faker->randomElement(['active', 'inactive', 'maintenance', 'repair', 'other']),
             'other_status' => null,
