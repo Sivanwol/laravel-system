@@ -35,7 +35,7 @@
         "laravel/fortify": "^1.24",
         "laravel/framework": "^11.9",
         "laravel/pennant": "*",
-        "laravel/prompts": "^0.1.25",
+        "laravel/prompts": "^0.3.1",
         "laravel/pulse": "^1.2",
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
