@@ -22,10 +22,10 @@ class LogSuccessfulLogin
     public function handle(Login $event)
     {
         $user = $event->user;
-        clock()->info("User {$user->getAuthIdentifier()} logged in!", ['user' => $user->toArray()]);
+        clock()->info("User {$user->getAuthIdentifier()} logged in!", ['user' => $user->getAuthIdentifier()]);
         // Your custom logic here
         activity()
-            ->causedBy($user)
+            ->causedBy($user->getAuthIdentifier())
             ->log('Logged in');
     }
 }

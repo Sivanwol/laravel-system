@@ -113,6 +113,10 @@ class BusinessController extends BaseApiController
                 $validatedRequest['active_at'] = now(); // Set current time for active_at
                 $business->update($validatedRequest);
             }
+            activity()
+                ->causedBy(auth()->id())
+                ->performedOn($business)
+                ->log('Business created');
 
             return $this->successResponse($business, 'Business successfully registered.', 201);
         } catch (Exception $e) {
@@ -227,6 +231,10 @@ class BusinessController extends BaseApiController
                 $business->active_at = null;
                 $business->save();
                 Clockwork::info('Business deactivated successfully', ['business_id' => $id]);
+                activity()
+                    ->causedBy(auth()->id())
+                    ->performedOn($business)
+                    ->log('Business updated');
                 return $this->successResponse(null, 'Business deactivated successfully.');
             }
             return $this->errorResponse('Business not found.', 404);

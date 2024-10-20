@@ -81,6 +81,10 @@ class UserController extends BaseApiController
             }
             $user = User::findOrFail($userId);
             $user->languages()->sync($request->language_ids);
+            activity()
+                ->causedBy(auth()->id())
+                ->performedOn($user)
+                ->log('User updated supported languages');
             return $this->successResponse('user supported languages updated successfully');
         } catch (\Exception $e) {
             Log::error('error updating user supported languages', ['user_id' => $userId, 'language_ids' => $request->language_ids, 'error' => $e->getMessage()]);
