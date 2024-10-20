@@ -21,6 +21,10 @@ class UserDeliveryFactory extends Factory
     {
         return [
             'user_id' => UserFactory::new()->create()->id,
+            'profile_image' => fake()->url(),
+            'current_driver_license' => fake()->randomElement(['A', 'A1', 'A2', 'B','B1', 'C', 'C1', 'D', 'D1', 'D2', 'D3', 'C+E', 'F','R']),
+            'driver_license_issue_date' => fake()->date(),
+            'driver_license_expiry_date' => fake()->date(),
             'whatsapp' => fake()->url(),
             'telegram' => fake()->url(),
             'instagram' => fake()->url(),
@@ -29,14 +33,8 @@ class UserDeliveryFactory extends Factory
             'linkedin' => fake()->url(),
             'youtube' => fake()->url(),
             'tiktok' => fake()->url(),
-            'snapchat' => fake()->url(),
             'about_my_service' => fake()->text(),
-            'about_me' => fake()->text(),
-            'country' => fake()->country(),
-            'country_region' => fake()->state(),
-            'city' => fake()->city(),
-            'address' => fake()->address(),
-            'zip_code' => fake()->postcode(),
+            'allow_physical_work' => fake()->boolean(),
         ];
     }
 }

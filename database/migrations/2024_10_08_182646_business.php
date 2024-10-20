@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('twitter', 500)->nullable();
             $table->string('instagram', 500)->nullable();
             $table->string('linkedin', 500)->nullable();
+            $table->string('tiktok', 500)->nullable();
             $table->string('youtube', 500)->nullable();
             $table->string('whatapp', 500)->nullable();
             $table->string('phone')->nullable();
@@ -29,10 +30,10 @@ return new class extends Migration {
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->string('zip')->nullable();
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
-            $table->string('timezone')->default('Asia/Jerusalem');
-            $table->enum('business-size', ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001-5000', '5001-10000', '10001+'])->default('11-50');
+            $table->string('apartment_number', 10)->nullable();
+            $table->string('building_number', 10)->nullable();
+            $table->smallInteger('floor_number')->nullable();
+            $table->enum('business_size', ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001-5000', '5001-10000', '10001+'])->default('11-50');
             $table->softDeletes();
             $table->timestamps();
         });

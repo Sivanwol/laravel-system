@@ -20,6 +20,7 @@ class UserDeliveryRegion extends Model
 {
 
     use HasFactory;
+    protected $table = 'user_delivery_regions';
     /**
      * The attributes that are mass assignable.
      *
@@ -33,6 +34,6 @@ class UserDeliveryRegion extends Model
 
     public function userDeliver()
     {
-        return $this->belongsTo(UserDelivery::class);
+        return $this->belongsTo(UserDelivery::class, 'user_delivery_id');
     }
 }

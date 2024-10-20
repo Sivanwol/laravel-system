@@ -3,22 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
-use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Prunable;
-use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
-use Spatie\Permission\Traits\HasRoles;
 
 class UserDelivery extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+    protected $table = 'user_delivery';
 
     /**
      * The attributes that are mass assignable.
@@ -68,6 +60,6 @@ class UserDelivery extends Model
 
     public function regions()
     {
-        return $this->hasMany(UserDeliveryRegion::class);
+        return $this->hasMany(UserDeliveryRegion::class, 'user_delivery_id');
     }
 }

@@ -1,10 +1,11 @@
 <?php
 namespace App\Traits;
 
-use App\Models\Languages;
+use App\Models\Language;
+use App\Models\User;
 trait UserHelperTrait {
     public function validateSupportedLanguages( $language_ids) {
-        $supportedLanguages = Languages::all()->pluck('code')->where('is_supported', '=', true)->toArray();
+        $supportedLanguages = Language::all()->pluck('code')->where('is_supported', '=', true)->toArray();
         foreach ($language_ids as $language_id) {
             if (!in_array($language_id, $supportedLanguages)) {
                 return false;

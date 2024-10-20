@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $user->assignRole(config('constants.system_roles.platform_admin'));
-        $user->languages()->attach($english->id);
+        $user->supportLanguage()->attach($english->id);
 
         // Delivery user
         $user = User::factory()->create([
@@ -37,30 +37,26 @@ class UserSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'sivan+delivey@wolberg.pro',
             'phone' => '972501234566',
+            'about_me' => 'About me',
             'phone_verified_at' => now(),
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
         $user->assignRole(config('constants.system_roles.delivery'));
-        $user->languages()->attach($english->id);
-        $user->languages()->attach($hebrew->id);
-        $userDeliveries = UserDelivery::factory()->create([
+        $user->supportLanguage()->attach($english->id);
+        $user->supportLanguage()->attach($hebrew->id);
+        $userDelivery = UserDelivery::factory()->create([
             'user_id' => $user->id,
         ]);
-        $userDeliveriesRegion = UserDeliveryRegion::factory()->create([
-            'user_delivery_id' => $userDeliveries->id,
+        $userDelivery->regions()->create([
             'country_code' => 'IL',
             'country_region' => config('constants.country_IL_region.dan'),
         ]);
-        $userDeliveries->regions()->attach($userDeliveriesRegion->id);
 
-        $userDeliveriesRegion = UserDeliveryRegion::factory()->create([
-            'user_delivery_id' => $userDeliveries->id,
+        $userDelivery->regions()->create([
             'country_code' => 'IL',
             'country_region' => config('constants.country_IL_region.shfela'),
         ]);
-        $userDeliveries->regions()->attach($userDeliveriesRegion->id);
-        $userDeliveries->save();
 
         // Business user
 
@@ -70,12 +66,31 @@ class UserSeeder extends Seeder
             'email' => 'sivan+business@wolberg.pro',
             'phone' => '972501234544',
             'phone_verified_at' => now(),
+            'about_me' => 'About me',
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
         $user->assignRole(config('constants.system_roles.business'));
-        $user->languages()->attach($english->id);
-        $user->languages()->attach($hebrew->id);
+        $user->supportLanguage()->attach($english->id);
+        $user->supportLanguage()->attach($hebrew->id);
+        $user->business()->create([
+            'name' => 'Business Name',
+            'description' => 'Business Description',
+            'address' => 'Business Address',
+            'phone' => '972501234544',
+            'email' => 'bz@testmail.org',
+            'website' => 'https://www.testmail.org',
+            'facebook' => 'https://www.facebook.com/testmail',
+            'instagram' => 'https://www.instagram.com/testmail',
+            'twitter' => 'https://www.twitter.com/testmail',
+            'linkedin' => 'https://www.linkedin.com/testmail',
+            'youtube' => 'https://www.youtube.com/testmail',
+            'tiktok' => 'https://www.tiktok.com/testmail',
+            'country' => 'IL',
+            'city' => 'Tel Aviv',
+            'zip' => '1234567',
+            'business_size' => '1-10',
+        ]);
 
         // Delivery Business user
         $user = User::factory()->create([
@@ -83,31 +98,26 @@ class UserSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'sivan+dbusiness@wolberg.pro',
             'phone' => '972501234555',
+            'about_me' => 'About me',
             'phone_verified_at' => now(),
             "password" => bcrypt(value: 'password'),
             'email_verified_at' => now(),
         ]);
         $user->assignRole(config('constants.system_roles.delivery_business'));
-        $user->languages()->attach($english->id);
-        $user->languages()->attach($hebrew->id);
-        $user->languages()->attach($spanish->id);
+        $user->supportLanguage()->attach($english->id);
+        $user->supportLanguage()->attach($hebrew->id);
+        $user->supportLanguage()->attach($spanish->id);
 
-        $userDeliveries = UserDelivery::factory()->create([
+        $userDelivery = UserDelivery::factory()->create([
             'user_id' => $user->id,
         ]);
-        $userDeliveriesRegion = UserDeliveryRegion::factory()->create([
-            'user_delivery_id' => $userDeliveries->id,
+        $userDelivery->regions()->create([
             'country_code' => 'IL',
-            'country_region' => config('constants.country_IL_region.north'),
+            'country_region' => config('constants.country_IL_region.dan'),
         ]);
-        $userDeliveries->regions()->attach($userDeliveriesRegion->id);
-
-        $userDeliveriesRegion = UserDeliveryRegion::factory()->create([
-            'user_delivery_id' => $userDeliveries->id,
+        $userDelivery->regions()->create([
             'country_code' => 'IL',
             'country_region' => config('constants.country_IL_region.shfela'),
         ]);
-        $userDeliveries->regions()->attach($userDeliveriesRegion->id);
-        $userDeliveries->save();
     }
 }

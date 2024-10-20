@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('about_my_service', 1000)->nullable();
             $table->string('youtube', 500)->nullable();
             $table->string('telegram', 500)->nullable();
-            $table->string('whatapp', 500)->nullable();
+            $table->string('whatsapp', 500)->nullable();
             $table->string('website', 500)->nullable();
             $table->string('facebook', 500)->nullable();
             $table->string('twitter', 500)->nullable();

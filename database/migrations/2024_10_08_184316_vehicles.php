@@ -33,7 +33,6 @@ return new class extends Migration {
             $table->integer('milage')->nullable();
             $table->dateTime('last_inspection')->nullable();
             $table->dateTime('last_service')->nullable();
-            $table->dateTime('date');
             $table->timestamps();
         });
 
@@ -65,7 +64,7 @@ return new class extends Migration {
             $table->dateTime('last_inspection')->nullable();
             $table->dateTime('last_service')->nullable();
             $table->timestamps();
-            $table->unique(['vehicle_id', 'business_id']);
+            $table->unique(['vehicle_id', 'user_id']);
         });
 
     }

@@ -77,7 +77,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function supportLanguage()
     {
-        return $this->belongsToMany(Languages::class, 'user_languages');
+        return $this->belongsToMany(Language::class, 'user_languages');
     }
     public function canAccessPanel(Panel $panel): bool
     {

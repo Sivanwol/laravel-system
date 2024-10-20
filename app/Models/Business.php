@@ -1,14 +1,14 @@
 <?php
 namespace App\Models;
 
-use App\Models\BusinessVehicle;
 use App\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Business extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     // Define the table name if it's not following Laravel's naming convention
     protected $table = 'business';
