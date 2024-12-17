@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('current_driver_license', ['A', 'A1', 'A2', 'B','B1', 'C', 'C1', 'D', 'D1', 'D2', 'D3', 'C+E', 'F','R'])->nullable();
+            $table->unsignedBigInteger('deliver_id')->nullable();
+            $table->foreign('deliver_id')->references('id')->on('deliver')->onDelete('cascade');
+            $table->enum('current_driver_license', ['A', 'A1', 'A2', 'B', 'C', 'C1', 'D', 'D1', 'C+E'])->nullable();
             $table->datetime('driver_license_issue_date')->nullable();
             $table->datetime('driver_license_expiry_date')->nullable();
             $table->string('profile_image', 500)->nullable();
