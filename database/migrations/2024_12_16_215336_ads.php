@@ -132,13 +132,11 @@ return new class extends Migration {
             $table->string('slug', 100);
             $table->string('title', 500);
             $table->string('short_description', 1000);
-            $table->enum('current_driver_license', ['A', 'A1', 'A2', 'B', 'C', 'C1', 'D', 'D1', 'C+E'])->nullable();
+            $table->enum('required_driver_license', ['A', 'A1', 'A2', 'B', 'C', 'C1', 'D', 'D1', 'C+E'])->nullable();
             $table->smallInteger('total_packages')->default(1);
             $table->smallInteger('total_pallets')->default(0);
             $table->boolean('required_cooling')->default(false);
             $table->text('description');
-            $table->boolean('is_negotiable')->default(1);
-            $table->boolean('is_targeted_offer')->default(0); //  favorite
             $table->smallInteger('total_pickups')->default(1);
             $table->smallInteger('total_deliveries')->default(1);
             $table->smallInteger('total_views')->default(0);
@@ -153,6 +151,13 @@ return new class extends Migration {
             $table->unsignedInteger('deliver_status_id')->default(1);
             $table->foreign('deliver_status_id')->references('id')->on('deliver_status')->onDelete('cascade');
             $table->integer('price')->default(0);
+            $table->boolean('is_negotiable')->default(1);
+            $table->boolean('is_targeted_offer')->default(0); //  favorite
+            $table->boolean('is_required_cooling')->default(0);
+            $table->boolean('is_some_cargo_breakable')->default(0);
+            $table->boolean('is_required_manual_work')->default(0);
+            $table->boolean('is_required_physical_workers')->default(0);
+            $table->boolean('is_required_assembles_workers')->default(0);
             $table->boolean('is_hourly')->default(0);
             $table->boolean('is_payment_bank')->default(0);
             $table->boolean('is_payment_cash')->default(0);
