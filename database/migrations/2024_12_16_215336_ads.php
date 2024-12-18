@@ -216,10 +216,25 @@ return new class extends Migration {
             $table->foreign('deliver_pickup_images_id')->references('id')->on('deliver_pickup_images')->onDelete('cascade');
             $table->unsignedBigInteger('deliver_destination_images_id')->nullable();
             $table->foreign('deliver_destination_images_id')->references('id')->on('deliver_destination_images')->onDelete('cascade');
-            $table->unsignedBigInteger('deliver_status_id')->nullable();
-            $table->foreign('deliver_status_id')->references('id')->on('deliver_status')->onDelete('cascade');
             $table->unsignedInteger('rate')->default(0);
             $table->text('notes')->nullable();
+            $table->timestamps();
+            $table->primary(['deliver_id', 'deliver_pickup_id', 'deliver_destination_id']);
+        });
+
+        Schema::table('deliver_messages', function (Blueprint $table): void {
+            $table->bigIncrements('id')->primary();
+            $table->unsignedBigInteger('deliver_id')->nullable();
+            $table->foreign('deliver_id')->references('id')->on('deliver')->onDelete('cascade');
+            $table->integer('from_user_id')->nullable();
+            $table->foreign('from_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('to_user_id')->nullable();
+            $table->foreign('to_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('title', 200);
+            $table->text('message');
+            $table->boolean('is_pin')->default(0);
+            $table->boolean('is_system')->default(0);
+            $table->boolean('is_read')->default(0);
             $table->timestamps();
         });
     }
@@ -241,5 +256,6 @@ return new class extends Migration {
         Schema::dropIfExists('deliver_reports');
         Schema::dropIfExists('deliver_offers');
         Schema::dropIfExists('deliver_rates');
+        Schema::dropIfExists('deliver_messages');
     }
 };
