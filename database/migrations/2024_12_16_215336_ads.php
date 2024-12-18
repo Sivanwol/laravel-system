@@ -153,6 +153,13 @@ return new class extends Migration {
             $table->unsignedInteger('deliver_status_id')->default(1);
             $table->foreign('deliver_status_id')->references('id')->on('deliver_status')->onDelete('cascade');
             $table->integer('price')->default(0);
+            $table->boolean('is_hourly')->default(0);
+            $table->boolean('is_payment_bank')->default(0);
+            $table->boolean('is_payment_cash')->default(0);
+            $table->boolean('is_payment_check')->default(0);
+            $table->boolean('is_payment_bit')->default(0);
+            $table->boolean('is_payment_paypal')->default(0);
+            $table->boolean('is_payment_paybox')->default(0);
             $table->string('currency', 10)->default('nis');
             $table->string('country_code', 10)->nullable();
             $table->timestamps();
