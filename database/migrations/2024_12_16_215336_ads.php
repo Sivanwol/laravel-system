@@ -205,7 +205,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::table('deliver_rate', function (Blueprint $table) {
+        Schema::table('deliver_rates', function (Blueprint $table) {
             $table->unsignedBigInteger('deliver_id')->nullable();
             $table->foreign('deliver_id')->references('id')->on('deliver')->onDelete('cascade');
             $table->unsignedBigInteger('deliver_pickup_id')->nullable();
@@ -240,6 +240,6 @@ return new class extends Migration {
         Schema::dropIfExists('deliver_categories');
         Schema::dropIfExists('deliver_reports');
         Schema::dropIfExists('deliver_offers');
-        Schema::dropIfExists('deliver_rate');
+        Schema::dropIfExists('deliver_rates');
     }
 };
