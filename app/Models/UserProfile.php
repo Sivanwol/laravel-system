@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Jrean\UserVerification\Traits\VerifiesUsers;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Prunable;
+use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
+use Spatie\Permission\Traits\HasRoles;
+
+class UserProfile extends \Eloquent
+{
+    protected $table = 'user_profiles';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'country_code',
+        'country_region',
+        'about_me',
+        'city',
+        'address',
+        'zip_code',
+        'allow_preform_deliveries',
+        'apartment_number',
+        'building_number',
+        'floor_number',
+        'dob',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'phone_verified_at' => 'datetime',
+            'email_verified_at' => 'datetime',
+            'dob' => 'date',
+            'floor_number' => 'integer',
+            'allow_preform_deliveries' => 'boolean',
+            'password' => 'hashed',
+        ];
+    }
+    public function business()
+    {
+        return $this->hasOne(Business::class, 'owner_user_id');
+    }
+
+    public function supportLanguage()
+    {
+        return $this->belongsToMany(Language::class, 'user_languages');
+    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@wolberg.pro') && $this->hasVerifiedEmail();
+    }
+    public function delivery()
+    {
+        return $this->hasOne(UserDelivery::class, 'user_id');
+    }
+    public function updateSupportLanguage(array $languageIds)
+    {
+        $this->supportLanguage()->sync($languageIds);
+    }
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): Builder
+    {
+        return static::query()->where('created_at', '<=', now()->subYear());
+    }
+}

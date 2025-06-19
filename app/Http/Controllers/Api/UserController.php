@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseApiController;
+use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\Vehicles\SupportedLanguagesUpdateUserRequest;
 use App\Models\User;
 use App\Traits\UserHelperTrait;
@@ -17,6 +18,15 @@ class UserController extends BaseApiController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use UserHelperTrait;
+
+    public function store(UserRequest $request)
+    {
+        // Data is automatically validated
+        $user = User::create($request->validated());
+
+        return response()->json($user, 201);
+    }
+
     /**
      * Display a listing of the resource.
      */

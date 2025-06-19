@@ -14,10 +14,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasPasskeys
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Prunable, FilamentUserHelpers, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Prunable, InteractsWithPasskeys, FilamentUserHelpers, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -25,23 +27,12 @@ class User extends Authenticatable implements FilamentUser
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'profile_image',
+        'name',
+        'avatar',
+        'google_id',
         'email',
         'password',
         'phone',
-        'country_code',
-        'country_region',
-        'about_me',
-        'city',
-        'address',
-        'zip_code',
-        'allow_preform_deliveries',
-        'apartment_number',
-        'building_number',
-        'floor_number',
-        'dob',
     ];
 
     /**
@@ -64,9 +55,6 @@ class User extends Authenticatable implements FilamentUser
         return [
             'phone_verified_at' => 'datetime',
             'email_verified_at' => 'datetime',
-            'dob' => 'date',
-            'floor_number' => 'integer',
-            'allow_preform_deliveries' => 'boolean',
             'password' => 'hashed',
         ];
     }

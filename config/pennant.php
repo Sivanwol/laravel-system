@@ -37,7 +37,7 @@ return [
         'database' => [
             'driver' => 'database',
             'connection' => null,
-            'table' => 'features',
+            'table' => 'toggle_features',
         ],
 
     ],

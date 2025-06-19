@@ -6,9 +6,6 @@ use App\Filament\Admin\Pages\Pulse;
 use Awcodes\LightSwitch\Enums\Alignment;
 use Awcodes\LightSwitch\LightSwitchPlugin;
 use Awcodes\Recently\RecentlyPlugin;
-use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
-use Datlechin\FilamentMenuBuilder\FilamentMenuBuilderPlugin;
-use EightyNine\Approvals\ApprovalPlugin;
 use EightyNine\Reports\ReportsPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,7 +15,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
-use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -28,11 +24,12 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Kenepa\ResourceLock\ResourceLockPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
-use Okeonline\FilamentArchivable\FilamentArchivablePlugin;
 use SolutionForest\FilamentAccessManagement\FilamentAccessManagementPanel;
-use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 use Stephenjude\FilamentDebugger\DebuggerPlugin;
 use Stephenjude\FilamentFeatureFlag\FeatureFlagPlugin;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Provider;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -44,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->login()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
@@ -60,20 +58,10 @@ class AdminPanelProvider extends PanelProvider
                 ResourceLockPlugin::make(),
                 LightSwitchPlugin::make()
                     ->position(Alignment::BottomCenter),
-                ApprovalPlugin::make(),
-                \SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin::make(),
-                FilamentArchivablePlugin::make(),
                 FilamentApexChartsPlugin::make(),
                 RecentlyPlugin::make(),
                 FeatureFlagPlugin::make(),
                 \Mvenghaus\FilamentScheduleMonitor\FilamentPlugin::make(),
-                TableLayoutTogglePlugin::make()
-                    ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
-                    ->shareLayoutBetweenPages(false) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
-                    ->displayToggleAction() // used to display the toggle action button automatically
-                    ->toggleActionHook('tables::toolbar.search.after') // chose the Filament view hook to render the button on
-                    ->listLayoutButtonIcon('heroicon-o-list-bullet')
-                    ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
                 DebuggerPlugin::make()
                     ->authorize(condition: fn() => auth()->user()->can('view.debuggers'))
                     ->horizonNavigation(
@@ -93,8 +81,20 @@ class AdminPanelProvider extends PanelProvider
                         url: url('admin/hq_pulse'),
                         openInNewTab: fn () => true
                     ),
-                GlobalSearchModalPlugin::make(),
-                FilamentAccessManagementPanel::make()
+                FilamentAccessManagementPanel::make(),
+                FilamentSocialitePlugin::make()
+                    ->providers([
+                        Provider::make('google')
+                            ->label('Google')
+                            ->icon('heroicon-o-globe-alt')
+                            ->color(Color::Red)
+                            ->outlined(false)
+                            ->scopes(['openid', 'profile', 'email'])
+                            ->with(['hd' => 'wolberg.pro']) // Optional: restrict to specific domain
+                    ])
+                    ->slug('auth')
+                    ->rememberLogin(true)
+
             ])
             ->middleware([
                 EncryptCookies::class,
