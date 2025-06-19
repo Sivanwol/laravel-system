@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleSeeder extends Seeder
 {
@@ -15,30 +14,85 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        sleep(1);
-        $role = Role::create([
-            'name' => config('constants.system_roles.delivery'),
+        // Create permissions first
+        $permissions = [
+            // Admin permissions
+            'admin-access',
+            'user-management',
+            'role-management',
+            'system-settings',
+
+            // Business permissions
+            'business-profile',
+            'fleet',
+
+            // Delivery permissions
+            'delivery-profile',
+            'delivery-packages',
+            'fleet-limited',
+
+            // Support permissions
+            'support',
+            'billing',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web'
+            ]);
+        }
+
+        // Create Admin role (for Filament access)
+        $adminRole = Role::firstOrCreate([
+            'name' => 'admin',
             'guard_name' => 'web',
         ]);
-        $role->syncPermissions(['fleet-limited', 'fleet-limited', 'delivery-profile']);
-
-        $role = Role::create([
-            'name' => config('constants.system_roles.business'),
-            'guard_name' => 'web',
+        $adminRole->syncPermissions([
+            'admin-access',
+            'user-management',
+            'role-management',
+            'system-settings',
+            'support',
+            'billing'
         ]);
-        $role->syncPermissions(['business-profile', 'fleet']);
 
-        $role = Role::create([
-            'name' => config('constants.system_roles.delivery_business'),
-            'guard_name' => 'web',
-        ]);
-        $role->syncPermissions(['business-profile', 'delivery-profile', 'delivery-packages', 'fleet']);
-
-        $role = Role::create([
+        // Create Platform Admin role
+        $platformAdminRole = Role::firstOrCreate([
             'name' => config('constants.system_roles.platform_admin'),
             'guard_name' => 'web',
         ]);
-        $role->syncPermissions(['support', 'billing', 'user-management']);
+        $platformAdminRole->syncPermissions([
+            'admin-access',
+            'support',
+            'billing',
+            'user-management'
+        ]);
 
+        // Create Delivery role
+        $deliveryRole = Role::firstOrCreate([
+            'name' => config('constants.system_roles.delivery'),
+            'guard_name' => 'web',
+        ]);
+        $deliveryRole->syncPermissions(['fleet-limited', 'delivery-profile']);
+
+        // Create Business role
+        $businessRole = Role::firstOrCreate([
+            'name' => config('constants.system_roles.business'),
+            'guard_name' => 'web',
+        ]);
+        $businessRole->syncPermissions(['business-profile', 'fleet']);
+
+        // Create Delivery Business role
+        $deliveryBusinessRole = Role::firstOrCreate([
+            'name' => config('constants.system_roles.delivery_business'),
+            'guard_name' => 'web',
+        ]);
+        $deliveryBusinessRole->syncPermissions([
+            'business-profile',
+            'delivery-profile',
+            'delivery-packages',
+            'fleet'
+        ]);
     }
 }

@@ -13,6 +13,13 @@ Route::prefix('common')->group(function () {
     Route::get('/countries', [CommonController::class, 'getCountries']);
 });
 
+Route::group(['middleware' => 'guest:sanctum'], function () {
+    Route::group(['prefix' => 'admin'], function () {
+        Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
+        Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+    });
+});
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::prefix('user')->group(function () {
         Route::get('/me', [UserController::class, 'me']);

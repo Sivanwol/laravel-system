@@ -32,7 +32,6 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
         'google_id',
         'email',
         'password',
-        'phone',
     ];
 
     /**
@@ -53,7 +52,6 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
     protected function casts(): array
     {
         return [
-            'phone_verified_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
@@ -67,10 +65,13 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
     {
         return $this->belongsToMany(Language::class, 'user_languages');
     }
+
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, '@wolberg.pro') && $this->hasVerifiedEmail();
+        return $this->hasVerifiedEmail()
+            && ($this->hasRole('admin') || $this->hasRole('platform_admin'));
     }
+
     public function delivery()
     {
         return $this->hasOne(UserDelivery::class, 'user_id');

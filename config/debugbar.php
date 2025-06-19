@@ -162,7 +162,7 @@ return [
      */
 
     'collectors' => [
-        'phpinfo'         => false,  // Php version
+        'phpinfo'         => true,  // Php version
         'messages'        => true,  // Messages
         'time'            => true,  // Time Datalogger
         'memory'          => true,  // Memory usage
@@ -170,23 +170,23 @@ return [
         'log'             => true,  // Logs from Monolog (merged in messages if enabled)
         'db'              => true,  // Show database (PDO) queries and bindings
         'views'           => true,  // Views with their data
-        'route'           => false,  // Current route information
-        'auth'            => false, // Display Laravel authentication status
+        'route'           => true,  // Current route information
+        'auth'            => true, // Display Laravel authentication status
         'gate'            => true,  // Display Laravel Gate checks
-        'session'         => false,  // Display session data
+        'session'         => true,  // Display session data
         'symfony_request' => true,  // Only one can be enabled..
         'mail'            => true,  // Catch mail messages
         'laravel'         => true, // Laravel version and environment
         'events'          => false, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
-        'logs'            => false, // Add the latest log messages
-        'files'           => false, // Show the included files
-        'config'          => false, // Display config settings
+        'logs'            => true, // Add the latest log messages
+        'files'           => true, // Show the included files
+        'config'          => true, // Display config settings
         'cache'           => false, // Display cache events
         'models'          => true,  // Display models
         'livewire'        => true,  // Display Livewire (when available)
-        'jobs'            => false, // Display dispatched jobs
-        'pennant'         => false, // Display Pennant feature flags
+        'jobs'            => true, // Display dispatched jobs
+        'pennant'         => true, // Display Pennant feature flags
     ],
 
     /*

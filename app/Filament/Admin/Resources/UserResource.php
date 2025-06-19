@@ -38,16 +38,16 @@ class UserResource extends Resource
                         'unique' => 'This email address is already taken.',
                     ]),
 
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(20)
-                    ->unique(User::class, 'phone', ignoreRecord: true)
-                    ->regex('/^[\+]?[1-9][\d]{0,15}$/')
-                    ->validationMessages([
-                        'unique' => 'This phone number is already taken.',
-                        'regex' => 'Please enter a valid phone number.',
-                    ]),
+//                Forms\Components\TextInput::make('phone')
+//                    ->tel()
+//                    ->required()
+//                    ->maxLength(20)
+//                    ->unique(User::class, 'phone', ignoreRecord: true)
+//                    ->regex('/^[\+]?[1-9][\d]{0,15}$/')
+//                    ->validationMessages([
+//                        'unique' => 'This phone number is already taken.',
+//                        'regex' => 'Please enter a valid phone number.',
+//                    ]),
 
                 Forms\Components\TextInput::make('country_code')
                     ->required()
@@ -73,8 +73,8 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
+//                Tables\Columns\TextColumn::make('phone')
+//                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
