@@ -6,11 +6,13 @@ use App\Filament\Admin\Pages\Pulse;
 use Awcodes\LightSwitch\Enums\Alignment;
 use Awcodes\LightSwitch\LightSwitchPlugin;
 use Awcodes\Recently\RecentlyPlugin;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Provider;
 use EightyNine\Reports\ReportsPlugin;
+use Exception;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -21,20 +23,75 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Kenepa\ResourceLock\ResourceLockPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use Log;
+use Mvenghaus\FilamentScheduleMonitor\FilamentPlugin;
 use SolutionForest\FilamentAccessManagement\FilamentAccessManagementPanel;
 use Stephenjude\FilamentDebugger\DebuggerPlugin;
 use Stephenjude\FilamentFeatureFlag\FeatureFlagPlugin;
-use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
-use DutchCodingCompany\FilamentSocialite\Provider;
 
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // Build the plugins array conditionally
+        $plugins = [
+            ReportsPlugin::make(),
+            ResourceLockPlugin::make(),
+            LightSwitchPlugin::make()
+                ->position(Alignment::BottomCenter),
+            FilamentApexChartsPlugin::make(),
+            FeatureFlagPlugin::make(),
+            FilamentPlugin::make(),
+            DebuggerPlugin::make()
+                ->authorize(condition: fn() => auth()->check() && auth()->user()->can('view.debuggers'))
+                ->horizonNavigation(
+                    condition: fn() => false,
+                )
+                ->telescopeNavigation(
+                    condition: fn() => auth()->check() && auth()->user()->can('view.telescope'),
+                    label: 'Telescope',
+                    icon: 'heroicon-o-sparkles',
+                    url: url('admin/hq_status'),
+                    openInNewTab: fn() => true
+                )
+                ->pulseNavigation(
+                    condition: fn() => auth()->check() && auth()->user()->can('view.pulse'),
+                    label: 'Pulse',
+                    icon: 'heroicon-o-bolt',
+                    url: url('admin/hq_pulse'),
+                    openInNewTab: fn() => true
+                ),
+            FilamentAccessManagementPanel::make(),
+            FilamentSocialitePlugin::make()
+                ->providers([
+                    Provider::make('google')
+                        ->label('Google')
+                        ->icon('heroicon-o-globe-alt')
+                        ->color(Color::Red)
+                        ->outlined(false)
+                        ->scopes(['openid', 'profile', 'email'])
+                        ->with(['hd' => 'wolberg.pro']) // Optional: restrict to specific domain
+                ])
+                ->slug('auth')
+                ->rememberLogin(true)
+        ];
+
+        // Only add RecentlyPlugin if the table exists
+        try {
+            if (Schema::hasTable('recent_entries')) {
+                $plugins[] = RecentlyPlugin::make()
+                    ->maxItems(20);
+            }
+        } catch (Exception $e) {
+            // If database connection fails, skip the plugin
+            Log::warning('Could not check for recent_entries table: ' . $e->getMessage());
+        }
+
         return $panel
             ->id('admin')
             ->path('admin')
@@ -52,50 +109,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-
-            ->plugins([
-                ReportsPlugin::make(),
-                ResourceLockPlugin::make(),
-                LightSwitchPlugin::make()
-                    ->position(Alignment::BottomCenter),
-                FilamentApexChartsPlugin::make(),
-                RecentlyPlugin::make(),
-                FeatureFlagPlugin::make(),
-                \Mvenghaus\FilamentScheduleMonitor\FilamentPlugin::make(),
-                DebuggerPlugin::make()
-                    ->authorize(condition: fn() => auth()->user()->can('view.debuggers'))
-                    ->horizonNavigation(
-                        condition: fn () => false,
-                    )
-                    ->telescopeNavigation(
-                        condition: fn()=> auth()->user()->can('view.telescope'),
-                        label: 'Telescope',
-                        icon: 'heroicon-o-sparkles',
-                        url: url('admin/hq_status'),
-                        openInNewTab: fn () => true
-                    )
-                    ->pulseNavigation(
-                        condition: fn () => auth()->user()->can('view.pulse'),
-                        label: 'Pulse',
-                        icon: 'heroicon-o-bolt',
-                        url: url('admin/hq_pulse'),
-                        openInNewTab: fn () => true
-                    ),
-                FilamentAccessManagementPanel::make(),
-                FilamentSocialitePlugin::make()
-                    ->providers([
-                        Provider::make('google')
-                            ->label('Google')
-                            ->icon('heroicon-o-globe-alt')
-                            ->color(Color::Red)
-                            ->outlined(false)
-                            ->scopes(['openid', 'profile', 'email'])
-                            ->with(['hd' => 'wolberg.pro']) // Optional: restrict to specific domain
-                    ])
-                    ->slug('auth')
-                    ->rememberLogin(true)
-
-            ])
+            ->plugins($plugins)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

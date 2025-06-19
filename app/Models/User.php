@@ -3,19 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Prunable;
+use Log;
 use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
-use Spatie\Permission\Traits\HasRoles;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasPasskeys
 {
@@ -68,8 +70,9 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
 
     public function canAccessPanel(Panel $panel): bool
     {
+        Log::info('canAccessPanel');
         return $this->hasVerifiedEmail()
-            && ($this->hasRole('admin') || $this->hasRole('platform_admin'));
+            && $this->hasRole(UserRole::adminPanelRoles());
     }
 
     public function delivery()
