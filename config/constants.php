@@ -23,7 +23,8 @@ return [
         'jerusalem' => 'Jerusalem',
     ],
     'system_roles' => [
-        'platform_admin' => 'super_admin',
+        'admin' => 'super_admin',
+        'platform_admin' => 'admin',
         'business' => 'business',
         'delivery_business' => 'delivery-business',
         'delivery' => 'delivery',

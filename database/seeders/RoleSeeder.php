@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\UserRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -44,32 +43,41 @@ class RoleSeeder extends Seeder
 
         // Create Admin role (for Filament access)
         $adminRole = Role::firstOrCreate([
-            'name' => UserRole::PLATFORM_ADMIN->value,
+            'name' => config('constants.system_roles.platform_admin'),
             'guard_name' => 'web',
         ]);
         $adminRole->syncPermissions([
             'user-management',
+            'view_user_profile',
+            'edit_user_profile',
             'support',
             'billing'
         ]);
 
         // Create Super Admin role
         $superAdminRole = Role::firstOrCreate([
-            'name' => UserRole::ADMIN->value,
+            'name' => config('constants.system_roles.admin'),
             'guard_name' => 'web',
         ]);
         $superAdminRole->syncPermissions([
             'user-management',
+            'view_user_profile',
+            'edit_user_profile',
             'system-settings',
             'support',
             'billing',
             'edit_user_profile'
         ]);
 
-        // Create Delivery role
+        // Create a Delivery role
         $deliveryRole = Role::firstOrCreate([
             'name' => config('constants.system_roles.delivery'),
             'guard_name' => 'web',
+        ]);
+        $deliveryRole->syncPermissions([
+            'view_user_profile',
+            'delivery-profile',
+            'delivery-packages',
         ]);
 
         // Create Business role

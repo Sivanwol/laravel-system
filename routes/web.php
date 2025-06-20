@@ -1,8 +1,6 @@
 <?php
 
-use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
-use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -30,29 +28,10 @@ if (app()->environment('local')) {
             'email_verified' => $user->hasVerifiedEmail(),
             'email_verified_at' => $user->email_verified_at,
             'roles' => $user->roles->pluck('name'),
-            'enum_roles' => UserRole::values(),
-            'admin_panel_roles' => UserRole::adminPanelRoles(),
-            'has_admin_role' => $user->hasRole(UserRole::ADMIN->value),
-            'has_platform_admin_role' => $user->hasRole(UserRole::PLATFORM_ADMIN->value),
+            'has_admin_role' => $user->hasRole(config('constants.system_roles.admin')),
+            'has_platform_admin_role' => $user->hasRole(config('constants.system_roles.platform_admin')),
             'can_access_panel' => $user->canAccessPanel(Filament::getPanel('admin')),
         ];
-    });
-    Route::get('/assign-role/{userId}/{role}', function ($userId, $role) {
-        // Validate role is in the enum
-        if (!in_array($role, UserRole::values())) {
-            return "Invalid role. Available roles: " . implode(', ', UserRole::values());
-        }
-
-        // Find the user
-        $user = User::find($userId);
-        if (!$user) {
-            return "User not found";
-        }
-
-        // Assign the role
-        $user->assignRole($role);
-
-        return "Role {$role} assigned to user {$user->email} (ID: {$user->id})";
     });
 }
 Route::get('/', function () {

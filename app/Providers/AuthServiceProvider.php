@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Enums\UserRole;
 use App\Models\User;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -26,7 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         // Register super-admin abilities
         Gate::define('access-admin-panel', function (User $user) {
-            return $user->hasVerifiedEmail() && $user->hasRole(UserRole::adminPanelRoles());
+            return $user->hasVerifiedEmail() && $user->hasRole([
+                    config('constants.system_roles.admin'),
+                    config('constants.system_roles.platform_admin'),
+                ]);
         });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Enums\UserRole;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
@@ -24,7 +23,7 @@ class UserResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole(UserRole::adminPanelRoles());
+        return auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]) || auth()->user()->hasPermissionTo('user-management');
     }
 
     public static function form(Form $form): Form
@@ -183,6 +182,7 @@ class UserResource extends Resource
                     ->modalHeading('Send Password Reset Link')
                     ->modalDescription('This will send a password reset link to the user\'s email.')
                     ->modalSubmitActionLabel('Send Link')
+                    ->visible(fn(User $record) => auth()->user()->hasPermissionTo('user-management') && auth()->id() !== $record->id)
                     ->action(function (User $record) {
                         // Send password reset notification
                         $status = Password::sendResetLink(
@@ -207,39 +207,82 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('viewProfile')
                     ->label('View Profile')
                     ->icon('heroicon-o-eye')
-                    ->url(fn(User $record) => static::getUrl('edit', ['record' => $record])),
+                    ->visible(fn(User $record) => auth()->user()->hasPermissionTo('view_user_profile') || auth()->id() === $record->id || auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]))
+                    ->url(fn(User $record) => static::getUrl('view', ['record' => $record->id])),
 
-                Tables\Actions\EditAction::make()
+                Tables\Actions\Action::make('changeAccess')
+                    ->label('Change Access')
+                    ->icon('heroicon-o-shield-check')
+                    ->color('primary')
                     ->visible(function (User $record) {
-                        $isSuperAdmin = $record->hasRole(UserRole::ADMIN->value);
-                        $currentUserIsSuperAdmin = auth()->user()->hasRole(UserRole::ADMIN->value);
-                        $isSelf = auth()->id() === $record->id;
+                        // Super admin users are only visible to other super admins
+                        $currentUserIsAdmin = auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
 
-                        // Super admin users can only be edited by other super admins
-                        if ($isSuperAdmin && !$currentUserIsSuperAdmin) {
+                        if ($currentUserIsAdmin) {
+                            return true;
+                        }
+                        // Only users with management permission can change roles
+                        if (!auth()->user()->hasPermissionTo('view_user_profile')) {
                             return false;
                         }
 
-                        return auth()->user()->hasPermissionTo('edit_user_profile') || $isSelf;
-                    }),
+
+                        return true;
+                    })
+                    ->form([
+                        Forms\Components\CheckboxList::make('roles')
+                            ->relationship('roles', 'name', function ($query) {
+                                // If the current user is not a super_admin, they cannot assign the super_admin role
+                                if (!auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
+                                    $query->where('name', '!=', config('constants.system_roles.admin'));
+                                    $query->where('name', '!=', config('constants.system_roles.platform_admin'));
+                                }
+                                return $query;
+                            })
+                            ->label('User Roles')
+                            ->helperText('Select the roles for this user')
+                            ->columns(2)
+                            ->required()
+                    ])
+                    ->action(function (User $record, array $data): void {
+                        // Make sure we're not altering super_admin unless we're super_admin
+                        if (
+                            !auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]) &&
+                            in_array(config('constants.system_roles.admin'), $data['roles'] ?? []) || in_array(config('constants.system_roles.platform_admin'), $data['roles'] ?? [])
+                        ) {
+                            Notification::make()
+                                ->title('Error')
+                                ->body('You do not have permission to assign the Super Admin role')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+
+                        $record->syncRoles($data['roles'] ?? []);
+
+                        Notification::make()
+                            ->title('User roles updated')
+                            ->success()
+                            ->send();
+                    })
+                    ->modalHeading('Change User Access')
+                    ->modalSubmitActionLabel('Update Roles'),
 
                 Tables\Actions\DeleteAction::make()
                     ->visible(function (User $record) {
-                        $isSuperAdmin = $record->hasRole(UserRole::ADMIN->value);
-                        $currentUserIsSuperAdmin = auth()->user()->hasRole(UserRole::ADMIN->value);
-                        $isSelf = auth()->id() === $record->id;
-
-                        // Super admin users can only be deleted by other super admins
-                        if ($isSuperAdmin && !$currentUserIsSuperAdmin) {
+                        // Must have user management permission
+                        if (!auth()->user()->hasPermissionTo('user-management')) {
                             return false;
                         }
+                        $isSelf = auth()->id() === $record->id;
+
 
                         // Users cannot delete themselves
                         if ($isSelf) {
                             return false;
                         }
 
-                        return auth()->user()->hasPermissionTo('edit_user_profile');
+                        return true;
                     })
             ])
             ->bulkActions([
@@ -260,8 +303,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}'),
             'invite' => Pages\InviteUser::route('/invite'),
         ];
     }

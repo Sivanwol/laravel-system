@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -15,7 +14,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(UserRole::adminPanelRoles());
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -23,7 +22,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->hasRole(UserRole::adminPanelRoles());
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -45,11 +44,11 @@ class UserPolicy
         }
 
         // Super admins can only be edited by other super admins
-        if ($model->hasRole(UserRole::ADMIN->value) && !$user->hasRole(UserRole::ADMIN->value)) {
+        if ($model->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
             return false;
         }
 
-        return $user->hasPermissionTo('edit_user_profile');
+        return $user->hasPermissionTo('user-management');
     }
 
     /**
@@ -63,10 +62,10 @@ class UserPolicy
         }
 
         // Super admins can only be deleted by other super admins
-        if ($model->hasRole(UserRole::ADMIN->value) && !$user->hasRole(UserRole::ADMIN->value)) {
+        if ($model->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
             return false;
         }
 
-        return $user->hasPermissionTo('edit_user_profile');
+        return $user->hasPermissionTo('user-management');
     }
 }

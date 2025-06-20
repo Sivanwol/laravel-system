@@ -13,10 +13,9 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'admin-access',
             'user-management',
-            'role-management',
             'system-settings',
+            'view_user_profile',
             'edit_user_profile',
             'support',
             'billing',

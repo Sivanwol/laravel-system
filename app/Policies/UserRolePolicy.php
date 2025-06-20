@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -14,8 +13,8 @@ class UserRolePolicy
      */
     public function viewAny(User $user): bool
     {
-        Log::info('User role policy', [UserRole::adminPanelRoles(), $user->hasRole(UserRole::adminPanelRoles())]);
-        return $user->hasRole(UserRole::adminPanelRoles());
+        Log::info('User role policy', [config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -23,7 +22,7 @@ class UserRolePolicy
      */
     public function view(User $user, Model $model): bool
     {
-        return $user->hasRole(UserRole::adminPanelRoles());
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -31,7 +30,7 @@ class UserRolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(UserRole::PLATFORM_ADMIN->value);
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -39,7 +38,7 @@ class UserRolePolicy
      */
     public function update(User $user, Model $model): bool
     {
-        return $user->hasRole(UserRole::PLATFORM_ADMIN->value);
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -47,6 +46,6 @@ class UserRolePolicy
      */
     public function delete(User $user, Model $model): bool
     {
-        return $user->hasRole(UserRole::PLATFORM_ADMIN->value);
+        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 }
