@@ -12,14 +12,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Spatie\LaravelPasskeys\Models\Concerns\InteractsWithPasskeys;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasPasskeys
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Prunable, InteractsWithPasskeys, FilamentUserHelpers, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Prunable, InteractsWithPasskeys, HasRoles;
 
     /**
      * The attributes that are mass assignable.

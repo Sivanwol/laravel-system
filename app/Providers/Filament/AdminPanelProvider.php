@@ -41,6 +41,9 @@ class AdminPanelProvider extends PanelProvider
         $plugins = [
             ReportsPlugin::make(),
             ResourceLockPlugin::make(),
+            RecentlyPlugin::make()
+                ->globalSearch(condition: false)
+                ->maxItems(10),
             LightSwitchPlugin::make()
                 ->position(Alignment::BottomCenter),
             FilamentApexChartsPlugin::make(),
