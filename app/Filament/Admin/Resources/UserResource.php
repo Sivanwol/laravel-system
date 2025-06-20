@@ -76,7 +76,7 @@ class UserResource extends Resource
 
                 Forms\Components\Section::make('Profile Information')
                     ->description('Additional user profile details')
-                    ->visible(!$isCreate)
+                    ->visible(!$isCreate && $canEdit)
                     ->schema([
                         Forms\Components\TextInput::make('userProfile.country_code')
                             ->label('Country Code')

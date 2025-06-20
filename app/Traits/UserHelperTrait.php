@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use App\Models\Language;
 use App\Models\User;
+
 trait UserHelperTrait {
     public function validateSupportedLanguages( $language_ids) {
         $supportedLanguages = Language::all()->pluck('code')->where('is_supported', '=', true)->toArray();
@@ -16,11 +17,11 @@ trait UserHelperTrait {
 
     public function getUserProfile(int $userId, bool $extendProfile = false): array{
         $user = User::findOrFail($userId);
-        $supportedLanguages = $user->languages()->get()->pluck('code')->toArray();
+        $supportedLanguages = $user->languages()->get()->pluck('code')->toArray() ?? [];
 
         $profile = [
             'id' => $user->id,
-            'name' => $user->first_name,
+            'name' => $user->name,
 //            'phone' => $user->phone,
             'email' => $user->email,
             'supported_languages' => $supportedLanguages,

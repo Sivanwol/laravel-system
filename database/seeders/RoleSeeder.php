@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
@@ -13,34 +12,6 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create permissions first
-        $permissions = [
-            // Admin permissions
-            'admin-access',
-            'user-management',
-            'role-management',
-            'system-settings',
-
-            // Business permissions
-            'business-profile',
-            'fleet',
-
-            // Delivery permissions
-            'delivery-profile',
-            'delivery-packages',
-            'fleet-limited',
-            // Support permissions
-            'support',
-            'billing',
-        ];
-
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'web'
-            ]);
-        }
-
         // Create Admin role (for Filament access)
         $adminRole = Role::firstOrCreate([
             'name' => config('constants.system_roles.platform_admin'),
@@ -50,6 +21,9 @@ class RoleSeeder extends Seeder
             'user-management',
             'view_user_profile',
             'edit_user_profile',
+            'view.debuggers',
+            'view.telescope',
+            'view.pulse',
             'support',
             'billing'
         ]);
@@ -63,6 +37,7 @@ class RoleSeeder extends Seeder
             'user-management',
             'view_user_profile',
             'edit_user_profile',
+            'view.telescope',
             'system-settings',
             'support',
             'billing',

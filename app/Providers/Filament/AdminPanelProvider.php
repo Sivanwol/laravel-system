@@ -65,7 +65,6 @@ class AdminPanelProvider extends PanelProvider
                     url: url('admin/hq_pulse'),
                     openInNewTab: fn() => true
                 ),
-//            FilamentAccessManagementPanel::make(),
             FilamentSocialitePlugin::make()
                 ->providers([
                     Provider::make('google')

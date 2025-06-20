@@ -52,7 +52,6 @@
         "predis/predis": "^2.0",
         "rinvex/countries": "^9.0",
         "socialiteproviders/google": "^4.1",
-        "solution-forest/filament-access-management": "^2.2.1",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-backup": "^9.3",
         "spatie/laravel-model-states": "^2.11",
