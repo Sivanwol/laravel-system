@@ -23,6 +23,7 @@ class RoleSeeder extends Seeder
             'edit_user_profile',
             'view.debuggers',
             'view.telescope',
+            'view.features',
             'view.pulse',
             'support',
             'billing'
@@ -38,6 +39,7 @@ class RoleSeeder extends Seeder
             'view_user_profile',
             'edit_user_profile',
             'view.telescope',
+            'view.features',
             'system-settings',
             'support',
             'billing',

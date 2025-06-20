@@ -48,7 +48,6 @@ class AdminPanelProvider extends PanelProvider
         // Build the plugins array conditionally
         $plugins = [
             ReportsPlugin::make(),
-            ResourceLockPlugin::make(),
             RecentlyPlugin::make()
                 ->globalSearch(condition: false)
                 ->maxItems(10),
@@ -90,16 +89,6 @@ class AdminPanelProvider extends PanelProvider
                 ->rememberLogin(true)
         ];
 
-        // Only add RecentlyPlugin if the table exists
-        try {
-            if (Schema::hasTable('recent_entries')) {
-                $plugins[] = RecentlyPlugin::make()
-                    ->maxItems(20);
-            }
-        } catch (Exception $e) {
-            // If database connection fails, skip the plugin
-            Log::warning('Could not check for recent_entries table: ' . $e->getMessage());
-        }
 
         return $panel
             ->id('admin')
@@ -110,9 +99,6 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
-            ->pages([
-                Pulse::class
-            ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,

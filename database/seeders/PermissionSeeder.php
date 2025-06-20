@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
             'edit_user_profile',
             'view.debuggers',
             'view.telescope',
+            'view.features',
             'view.pulse',
             'support',
             'billing',
