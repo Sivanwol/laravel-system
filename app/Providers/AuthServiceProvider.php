@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         // Register super-admin abilities
         Gate::define('access-admin-panel', function (User $user) {
-            return $user->hasVerifiedEmail() && $user->hasRole([
+            return $user->hasVerifiedEmail() && $user->hasAnyRole([
                     config('constants.system_roles.admin'),
                     config('constants.system_roles.platform_admin'),
                 ]);

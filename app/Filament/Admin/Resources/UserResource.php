@@ -216,7 +216,7 @@ class UserResource extends Resource
                     ->color('primary')
                     ->visible(function (User $record) {
                         // Super admin users are only visible to other super admins
-                        $currentUserIsAdmin = auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+                        $currentUserIsAdmin = auth()->user()->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
 
                         if ($currentUserIsAdmin) {
                             return true;
@@ -233,7 +233,7 @@ class UserResource extends Resource
                         Forms\Components\CheckboxList::make('roles')
                             ->relationship('roles', 'name', function ($query) {
                                 // If the current user is not a super_admin, they cannot assign the super_admin role
-                                if (!auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
+                                if (!auth()->user()->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
                                     $query->where('name', '!=', config('constants.system_roles.admin'));
                                     $query->where('name', '!=', config('constants.system_roles.platform_admin'));
                                 }

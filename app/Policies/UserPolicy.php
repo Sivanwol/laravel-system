@@ -14,7 +14,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -22,7 +22,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -44,7 +44,7 @@ class UserPolicy
         }
 
         // Super admins can only be edited by other super admins
-        if ($model->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
+        if ($model->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')])) {
             return false;
         }
 

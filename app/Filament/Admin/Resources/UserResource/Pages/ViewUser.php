@@ -16,7 +16,7 @@ class ViewUser extends ViewRecord
     {
         parent::mount($record);
 
-        $currentUserIsAdmin = auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        $currentUserIsAdmin = auth()->user()->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
         // Check if edit parameter is present in the request
         $edit = request()->query('edit');
 
@@ -82,8 +82,8 @@ class ViewUser extends ViewRecord
                         return false;
                     }
 
-                    $isAdmin = $this->record->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
-                    $currentUserIsAdmin = auth()->user()->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+                    $isAdmin = $this->record->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+                    $currentUserIsAdmin = auth()->user()->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
                     $isSelf = auth()->id() === $this->record->id;
                     // No changing yourself
                     if ($isSelf) {

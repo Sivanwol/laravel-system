@@ -14,7 +14,7 @@ class UserRolePolicy
     public function viewAny(User $user): bool
     {
         Log::info('User role policy', [config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -22,7 +22,7 @@ class UserRolePolicy
      */
     public function view(User $user, Model $model): bool
     {
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -30,7 +30,7 @@ class UserRolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -38,7 +38,7 @@ class UserRolePolicy
      */
     public function update(User $user, Model $model): bool
     {
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 
     /**
@@ -46,6 +46,6 @@ class UserRolePolicy
      */
     public function delete(User $user, Model $model): bool
     {
-        return $user->hasRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
+        return $user->hasAnyRole([config('constants.system_roles.admin'), config('constants.system_roles.platform_admin')]);
     }
 }
