@@ -72,7 +72,7 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasVerifiedEmail()
-            && $this->hasRole(config('constants.system_roles.platform_admin'), config('constants.system_roles.admin'));
+            && $this->hasAnyRole(config('constants.system_roles.platform_admin'), config('constants.system_roles.admin'));
     }
 
     public function delivery()
