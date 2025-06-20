@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -43,28 +44,26 @@ class RoleSeeder extends Seeder
 
         // Create Admin role (for Filament access)
         $adminRole = Role::firstOrCreate([
-            'name' => 'admin',
+            'name' => UserRole::PLATFORM_ADMIN->value,
             'guard_name' => 'web',
         ]);
         $adminRole->syncPermissions([
-            'admin-access',
             'user-management',
-            'role-management',
-            'system-settings',
             'support',
             'billing'
         ]);
 
-        // Create Platform Admin role
-        $platformAdminRole = Role::firstOrCreate([
-            'name' => config('constants.system_roles.platform_admin'),
+        // Create Super Admin role
+        $superAdminRole = Role::firstOrCreate([
+            'name' => UserRole::ADMIN->value,
             'guard_name' => 'web',
         ]);
-        $platformAdminRole->syncPermissions([
-            'admin-access',
+        $superAdminRole->syncPermissions([
+            'user-management',
+            'system-settings',
             'support',
             'billing',
-            'user-management'
+            'edit_user_profile'
         ]);
 
         // Create Delivery role
@@ -72,25 +71,17 @@ class RoleSeeder extends Seeder
             'name' => config('constants.system_roles.delivery'),
             'guard_name' => 'web',
         ]);
-        $deliveryRole->syncPermissions(['fleet-limited', 'delivery-profile']);
 
         // Create Business role
         $businessRole = Role::firstOrCreate([
             'name' => config('constants.system_roles.business'),
             'guard_name' => 'web',
         ]);
-        $businessRole->syncPermissions(['business-profile', 'fleet']);
 
         // Create Delivery Business role
         $deliveryBusinessRole = Role::firstOrCreate([
             'name' => config('constants.system_roles.delivery_business'),
             'guard_name' => 'web',
-        ]);
-        $deliveryBusinessRole->syncPermissions([
-            'business-profile',
-            'delivery-profile',
-            'delivery-packages',
-            'fleet'
         ]);
     }
 }

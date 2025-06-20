@@ -34,6 +34,8 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
         'google_id',
         'email',
         'password',
+        'last_login',
+        'is_invited',
     ];
 
     /**
@@ -56,6 +58,8 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login' => 'datetime',
+            'is_invited' => 'boolean',
         ];
     }
     public function business()
@@ -70,7 +74,12 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
 
     public function canAccessPanel(Panel $panel): bool
     {
-        Log::info('canAccessPanel');
+        Log::info('canAccessPanel', [
+            'user_id' => $this->id,
+            'panel_id' => $panel->getId(),
+            'has_verified_email' => $this->hasVerifiedEmail(),
+            'has_role' => $this->hasRole(UserRole::adminPanelRoles()),
+        ]);
         return $this->hasVerifiedEmail()
             && $this->hasRole(UserRole::adminPanelRoles());
     }
@@ -78,6 +87,11 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys
     public function delivery()
     {
         return $this->hasOne(UserDelivery::class, 'user_id');
+    }
+
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id');
     }
     public function updateSupportLanguage(array $languageIds)
     {

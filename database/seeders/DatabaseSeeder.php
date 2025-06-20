@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\PermissionSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +17,7 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
+            RoleSyncPermissionsSeeder::class,
             AdminSeeder::class,
         ]);
     }

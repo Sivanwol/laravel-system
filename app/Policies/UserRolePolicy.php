@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Providers\Filament;
+namespace App\Policies;
 
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class UserRolePolicy
 {
@@ -13,6 +14,7 @@ class UserRolePolicy
      */
     public function viewAny(User $user): bool
     {
+        Log::info('User role policy', [UserRole::adminPanelRoles(), $user->hasRole(UserRole::adminPanelRoles())]);
         return $user->hasRole(UserRole::adminPanelRoles());
     }
 

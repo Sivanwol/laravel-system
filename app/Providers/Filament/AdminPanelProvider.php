@@ -29,7 +29,6 @@ use Kenepa\ResourceLock\ResourceLockPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Log;
 use Mvenghaus\FilamentScheduleMonitor\FilamentPlugin;
-use SolutionForest\FilamentAccessManagement\FilamentAccessManagementPanel;
 use Stephenjude\FilamentDebugger\DebuggerPlugin;
 use Stephenjude\FilamentFeatureFlag\FeatureFlagPlugin;
 
@@ -66,7 +65,7 @@ class AdminPanelProvider extends PanelProvider
                     url: url('admin/hq_pulse'),
                     openInNewTab: fn() => true
                 ),
-            FilamentAccessManagementPanel::make(),
+//            FilamentAccessManagementPanel::make(),
             FilamentSocialitePlugin::make()
                 ->providers([
                     Provider::make('google')

@@ -2,12 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -17,19 +13,28 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'fleet',
-            'fleet-limited',
-            'business-profile',
-            'delivery-profile',
-            'delivery-packages',
+            'admin-access',
+            'user-management',
+            'role-management',
+            'system-settings',
+            'edit_user_profile',
             'support',
             'billing',
-            'user-management',
+            'business-profile',
+            'fleet',
+            'delivery-profile',
+            'delivery-packages',
+            'fleet-limited'
         ];
-        $values = [];
+
+        // Use the model to create permissions
         foreach ($permissions as $permission) {
-            array_push($values, ['name' => $permission, 'guard_name' => 'web']);
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web'
+            ]);
         }
-        DB::table('permissions')->insert($values);
+
+        $this->command->info('Permissions created successfully');
     }
 }
