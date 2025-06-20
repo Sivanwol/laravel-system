@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'login-via' => 'Or log in via',
+    'login-via' => trans('admin/login.login-via'),
 
-    'login-failed' => 'Login failed, please try again.',
+    'login-failed' => trans('admin/login.login-failed'),
 
-    'user-not-allowed' => 'Your email is not part of a domain that is allowed.',
+    'user-not-allowed' => trans('admin/login.user-not-allowed'),
 
-    'registration-not-enabled' => 'Registration of a new user is not allowed.',
+    'registration-not-enabled' => trans('admin/login.registration-not-enabled'),
 ];

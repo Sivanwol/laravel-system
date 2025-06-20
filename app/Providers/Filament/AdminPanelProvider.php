@@ -6,6 +6,8 @@ use App\Filament\Admin\Pages\Pulse;
 use Awcodes\LightSwitch\Enums\Alignment;
 use Awcodes\LightSwitch\LightSwitchPlugin;
 use Awcodes\Recently\RecentlyPlugin;
+use BezhanSalleh\FilamentLanguageSwitch\Enums\Placement;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use EightyNine\Reports\ReportsPlugin;
@@ -37,6 +39,12 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+            $switch
+                ->locales(['ru','en','fr', 'he'])
+                ->visible(outsidePanels: true)
+                ->outsidePanelPlacement(Placement::TopRight); // also accepts a closure
+        });
         // Build the plugins array conditionally
         $plugins = [
             ReportsPlugin::make(),
@@ -45,7 +53,7 @@ class AdminPanelProvider extends PanelProvider
                 ->globalSearch(condition: false)
                 ->maxItems(10),
             LightSwitchPlugin::make()
-                ->position(Alignment::BottomCenter),
+                ->position(Alignment::TopRight),
             FilamentApexChartsPlugin::make(),
             FeatureFlagPlugin::make(),
             FilamentPlugin::make(),
